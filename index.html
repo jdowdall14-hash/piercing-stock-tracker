@@ -5,109 +5,101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PiercingOS MVP</title>
 <style>
-:root{--bg:#f7f3ee;--card:#fff;--ink:#161412;--muted:#746e66;--line:#e9dfd4;--brand:#16483d;--brand2:#226c5b;--warn:#b45309}
-*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-.app{min-height:100vh;display:grid;grid-template-columns:260px 1fr}
-.sidebar{background:var(--brand);color:white;padding:22px;position:sticky;top:0;height:100vh}
-.logo{font-size:24px;font-weight:900;line-height:1.05}.small{font-size:13px;color:rgba(255,255,255,.72);margin-top:7px;margin-bottom:24px}
-.nav button{display:block;width:100%;border:0;background:transparent;color:white;text-align:left;padding:13px 12px;border-radius:14px;font-size:16px;margin:4px 0}
-.nav button.active{background:rgba(255,255,255,.16)} .main{padding:26px;min-width:0}
-.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px} h1{margin:0;font-size:31px} h2{margin:0 0 14px}
-.badge{background:#e3f1ec;color:var(--brand);padding:9px 12px;border-radius:999px;font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(30,20,10,.04)}
-.kpi{font-size:32px;font-weight:900;margin-top:8px}.muted{color:var(--muted);font-size:14px}.two{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
-table{width:100%;border-collapse:collapse} th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px} th{color:var(--muted);font-size:12px;text-transform:uppercase}
-.btn{border:0;background:var(--brand2);color:white;border-radius:13px;padding:12px 14px;font-weight:900;font-size:15px}.btn.light{background:#efe7dd;color:#241f1a}.btn.danger{background:#8a2c2c}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:12px} label{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:5px}
-input,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;background:white;font-size:16px}
-.screen{display:none}.screen.active{display:block}.tag{display:inline-flex;background:#fff4df;color:#8a4b02;border:1px solid #f0d4a5;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.product{border:1px solid var(--line);border-radius:16px;padding:14px;background:white;text-align:left}.product strong{display:block;font-size:17px}.product span{color:var(--muted)}
-.basket-line{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0}.total{display:flex;justify-content:space-between;font-size:28px;font-weight:900;margin-top:14px}
+:root{--bg:#f7f3ee;--card:#fff;--ink:#161412;--muted:#746e66;--line:#e9dfd4;--brand:#16483d;--brand2:#226c5b;--bad:#8a2c2c}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{min-height:100vh;display:grid;grid-template-columns:260px 1fr}.sidebar{background:var(--brand);color:white;padding:22px;position:sticky;top:0;height:100vh}
+.logo{font-size:24px;font-weight:900;line-height:1.05}.small{font-size:13px;color:rgba(255,255,255,.72);margin:7px 0 24px}
+.nav button{display:block;width:100%;border:0;background:transparent;color:white;text-align:left;padding:13px 12px;border-radius:14px;font-size:16px;margin:4px 0;cursor:pointer}.nav button.active{background:rgba(255,255,255,.16)}
+.main{padding:26px;min-width:0}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}h1{margin:0;font-size:31px}h2{margin:0 0 14px}
+.badge{background:#e3f1ec;color:var(--brand);padding:9px 12px;border-radius:999px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.two{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
+.card{background:white;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(30,20,10,.04)}.kpi{font-size:32px;font-weight:900;margin-top:8px}.muted{color:var(--muted);font-size:14px}.mini{font-size:12px;color:var(--muted)}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase}
+.btn{border:0;background:var(--brand2);color:white;border-radius:13px;padding:12px 14px;font-weight:900;font-size:15px;cursor:pointer}.btn.light{background:#efe7dd;color:#241f1a}.btn.danger{background:var(--bad)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:5px}input,select,textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;background:white;font-size:16px}textarea{min-height:110px}
+.screen{display:none}.screen.active{display:block}.tag{display:inline-flex;background:#fff4df;color:#8a4b02;border:1px solid #f0d4a5;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}.tag.green{background:#e3f1ec;color:#16483d;border-color:#b7d8ce}.tag.red{background:#fde8e8;color:#8a2c2c;border-color:#f3bcbc}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.product{border:1px solid var(--line);border-radius:16px;padding:14px;background:white;text-align:left;cursor:pointer}.product strong{display:block;font-size:17px}.product span{color:var(--muted)}
+.basket-line{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0;gap:12px}.total{display:flex;justify-content:space-between;font-size:28px;font-weight:900;margin-top:14px}.checkout{position:sticky;bottom:0;background:white;border-top:1px solid var(--line);padding-top:14px;margin-top:16px}.recipe-box{background:#fbf8f4;border:1px dashed #d8cbbd;border-radius:14px;padding:10px;margin-top:7px;font-size:13px}
 @media(max-width:850px){.app{display:block}.sidebar{height:auto;position:sticky;z-index:5}.nav{display:flex;overflow:auto;gap:6px}.nav button{white-space:nowrap;width:auto}.main{padding:16px}.grid,.two,.form,.products{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar">
-  <div class="logo">PiercingOS</div>
-  <div class="small">MVP demo — POS, stock, clients and staff</div>
-  <div class="nav">
-    <button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button>
-    <button onclick="show('pos',this)">💳 POS</button>
-    <button onclick="show('stock',this)">📦 Stock</button>
-    <button onclick="show('clients',this)">👥 Clients</button>
-    <button onclick="show('users',this)">🔐 Users</button>
-  </div>
-</aside>
-<main class="main">
-<section id="dashboard" class="screen active">
-  <div class="top"><h1>Dashboard</h1><span class="badge">Live MVP preview</span></div>
-  <div class="grid">
-    <div class="card"><div class="muted">Sales today</div><div class="kpi" id="kpiSales">£0</div></div>
-    <div class="card"><div class="muted">Transactions</div><div class="kpi" id="kpiTx">0</div></div>
-    <div class="card"><div class="muted">Low stock</div><div class="kpi" id="kpiLow">0</div></div>
-    <div class="card"><div class="muted">Clients</div><div class="kpi" id="kpiClients">0</div></div>
-  </div>
-  <div class="two">
-    <div class="card"><h2>Recent sales</h2><table><thead><tr><th>Sale</th><th>Payment</th><th>Total</th></tr></thead><tbody id="recentSales"></tbody></table></div>
-    <div class="card"><h2>Low stock alerts</h2><div id="lowAlerts"></div></div>
-  </div>
-</section>
+<div class="app"><aside class="sidebar">
+<div class="logo">PiercingOS</div><div class="small">MVP v4 — clients, tracking & aftercare</div>
+<div class="nav">
+<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button>
+</div></aside><main class="main">
 
-<section id="pos" class="screen">
-  <div class="top"><h1>POS</h1><button class="btn" onclick="checkout()">Process sale</button></div>
-  <div class="two">
-    <div class="card"><h2>Tap to add</h2><div class="products" id="productButtons"></div></div>
-    <div class="card"><h2>Basket</h2><div id="basket"></div><div class="total"><span>Total</span><span id="basketTotal">£0</span></div><br><label>Payment method</label><select id="payment"><option>Card</option><option>Cash</option><option>Split</option></select><br><br><button class="btn light" onclick="clearBasket()">Clear basket</button></div>
-  </div>
-</section>
+<section id="dashboard" class="screen active"><div class="top"><h1>Dashboard</h1><span class="badge">Demo data saves on this device</span></div>
+<div class="grid"><div class="card"><div class="muted">Sales today</div><div class="kpi" id="kpiSales">£0</div></div><div class="card"><div class="muted">Piercings logged</div><div class="kpi" id="kpiPiercings">0</div></div><div class="card"><div class="muted">Aftercare not sent</div><div class="kpi" id="kpiEmail">0</div></div><div class="card"><div class="muted">Low stock</div><div class="kpi" id="kpiLow">0</div></div></div>
+<div class="two"><div class="card"><h2>Recent transactions</h2><table><thead><tr><th>Client</th><th>Sale</th><th>Total</th><th>Aftercare</th></tr></thead><tbody id="recentSales"></tbody></table></div><div class="card"><h2>Low stock alerts</h2><div id="lowAlerts"></div></div></div></section>
 
-<section id="stock" class="screen">
-  <div class="top"><h1>Stock</h1><button class="btn" onclick="addStock()">Add stock item</button></div>
-  <div class="card"><div class="form"><div><label>Item</label><input id="stockName" placeholder="e.g. 16G needles"></div><div><label>Quantity</label><input id="stockQty" type="number" placeholder="50"></div><div><label>Reorder level</label><input id="stockReorder" type="number" placeholder="20"></div><div><label>Supplier</label><input id="stockSupplier" placeholder="Supplier name"></div></div></div>
-  <br><div class="card"><table><thead><tr><th>Item</th><th>Qty</th><th>Reorder</th><th>Supplier</th><th>Status</th></tr></thead><tbody id="stockTable"></tbody></table></div>
-</section>
+<section id="pos" class="screen"><div class="top"><h1>POS</h1><span class="badge">Assign a client before checkout</span></div><div class="two"><div class="card"><h2>Tap to add</h2><div class="products" id="productButtons"></div></div><div class="card">
+<h2>Basket</h2><div class="form"><div><label>Client/account</label><select id="saleClient"></select></div><div><label>Staff member</label><select id="saleStaff"></select></div></div><br><div id="basket"></div><div class="total"><span>Total</span><span id="basketTotal">£0</span></div>
+<div class="checkout"><label>Payment method</label><select id="payment"><option>Card</option><option>Cash</option><option>Split</option></select><br><br><button class="btn" style="width:100%" onclick="checkout()">Process transaction</button><br><br><button class="btn light" style="width:100%" onclick="clearBasket()">Clear basket</button></div>
+</div></div></section>
 
-<section id="clients" class="screen">
-  <div class="top"><h1>Clients</h1><button class="btn" onclick="addClient()">Add client</button></div>
-  <div class="card"><div class="form"><div><label>Name</label><input id="clientName" placeholder="Client name"></div><div><label>Phone</label><input id="clientPhone" placeholder="Phone number"></div><div><label>Piercing / note</label><input id="clientNote" placeholder="Nose piercing, aftercare sent..."></div><div><label>Date</label><input id="clientDate" type="date"></div></div></div>
-  <br><div class="card"><table><thead><tr><th>Name</th><th>Phone</th><th>Note</th><th>Date</th></tr></thead><tbody id="clientTable"></tbody></table></div>
-</section>
+<section id="piercings" class="screen"><div class="top"><h1>Piercing history</h1><span class="badge">Tracks client, staff, piercing and email status</span></div><div class="card"><table><thead><tr><th>Date</th><th>Client</th><th>Piercing / sale</th><th>Staff</th><th>Aftercare email</th><th></th></tr></thead><tbody id="piercingTable"></tbody></table></div></section>
 
-<section id="users" class="screen">
-  <div class="top"><h1>Users</h1><button class="btn" onclick="addUser()">Invite user</button></div>
-  <div class="card"><div class="form"><div><label>Name</label><input id="userName" placeholder="Staff name"></div><div><label>Email</label><input id="userEmail" placeholder="email@example.com"></div><div><label>Role</label><select id="userRole"><option>Owner/Admin</option><option>Piercer</option><option>Reception/POS</option></select></div><div><label>Status</label><select id="userStatus"><option>Active</option><option>Pending invite</option></select></div></div></div>
-  <br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="userTable"></tbody></table></div>
-</section>
-</main>
-</div>
+<section id="aftercare" class="screen"><div class="top"><h1>Aftercare emails</h1><button class="btn" onclick="saveAftercareTemplate()">Save template</button></div><div class="two"><div class="card"><h2>Email template</h2><label>Subject</label><input id="aftercareSubject"><br><br><label>Message</label><textarea id="aftercareBody"></textarea><p class="mini">This demo opens your email app with the message filled in. The real Firebase version can send automatically.</p></div><div class="card"><h2>Waiting to send</h2><div id="aftercareQueue"></div></div></div></section>
+
+<section id="recipes" class="screen"><div class="top"><h1>Recipes</h1><button class="btn" onclick="addRecipe()">Save recipe</button></div><div class="card"><div class="form"><div><label>Service / product name</label><input id="recipeName" placeholder="e.g. Nose piercing"></div><div><label>Sale price</label><input id="recipePrice" type="number" placeholder="35"></div><div><label>Stock item 1</label><select id="recipeItem1"></select></div><div><label>Qty used</label><input id="recipeQty1" type="number" value="1"></div><div><label>Stock item 2</label><select id="recipeItem2"></select></div><div><label>Qty used</label><input id="recipeQty2" type="number" value="1"></div><div><label>Stock item 3 optional</label><select id="recipeItem3"></select></div><div><label>Qty used</label><input id="recipeQty3" type="number" value="0"></div></div></div><br><div class="card"><table><thead><tr><th>Service</th><th>Price</th><th>Recipe deducts</th><th></th></tr></thead><tbody id="recipeTable"></tbody></table></div></section>
+
+<section id="stock" class="screen"><div class="top"><h1>Stock</h1><button class="btn" onclick="addStock()">Add stock item</button></div><div class="card"><div class="form"><div><label>Item</label><input id="stockName"></div><div><label>Quantity</label><input id="stockQty" type="number"></div><div><label>Reorder level</label><input id="stockReorder" type="number"></div><div><label>Supplier</label><select id="stockSupplier"></select></div></div></div><br><div class="card"><table><thead><tr><th>Item</th><th>Qty</th><th>Reorder</th><th>Supplier</th><th>Status</th><th></th></tr></thead><tbody id="stockTable"></tbody></table></div></section>
+
+<section id="suppliers" class="screen"><div class="top"><h1>Suppliers</h1><button class="btn" onclick="addSupplier()">Add supplier</button></div><div class="card"><div class="form"><div><label>Supplier name</label><input id="supplierName"></div><div><label>Contact / phone</label><input id="supplierPhone"></div><div><label>Email</label><input id="supplierEmail"></div><div><label>Notes</label><input id="supplierNotes"></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Contact</th><th>Email</th><th>Notes</th><th></th></tr></thead><tbody id="supplierTable"></tbody></table></div></section>
+
+<section id="clients" class="screen"><div class="top"><h1>Clients / accounts</h1><button class="btn" onclick="addClient()">Add client</button></div><div class="card"><div class="form"><div><label>Name</label><input id="clientName"></div><div><label>Email</label><input id="clientEmail"></div><div><label>Phone</label><input id="clientPhone"></div><div><label>Notes</label><input id="clientNote"></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Notes</th></tr></thead><tbody id="clientTable"></tbody></table></div></section>
+
+<section id="users" class="screen"><div class="top"><h1>Users</h1><button class="btn" onclick="addUser()">Invite user</button></div><div class="card"><div class="form"><div><label>Name</label><input id="userName"></div><div><label>Email</label><input id="userEmail"></div><div><label>Role</label><select id="userRole"><option>Owner/Admin</option><option>Piercer</option><option>Reception/POS</option></select></div><div><label>Status</label><select id="userStatus"><option>Active</option><option>Pending invite</option></select></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="userTable"></tbody></table></div></section>
+
+</main></div>
 <script>
-const seed={products:[{name:"Nose piercing",price:35,uses:"16G Needles"},{name:"Lobe pair",price:55,uses:"Titanium Studs"},{name:"Helix",price:40,uses:"16G Needles"},{name:"Titanium stud",price:10,uses:"Titanium Studs"},{name:"Aftercare spray",price:8,uses:"Aftercare Spray"}],stock:[{name:"16G Needles",qty:12,reorder:25,supplier:"NeedlePro"},{name:"Titanium Studs",qty:84,reorder:30,supplier:"Jewellery Co"},{name:"Aftercare Spray",qty:22,reorder:20,supplier:"MedSupply"},{name:"Sterile Wipes",qty:18,reorder:50,supplier:"MedSupply"}],clients:[{name:"Sophie M",phone:"07...",note:"Nose piercing",date:new Date().toISOString().slice(0,10)}],users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"}],sales:[]};
-let data=JSON.parse(localStorage.getItem("piercingOS")||"null")||seed; let basket=[];
-function save(){localStorage.setItem("piercingOS",JSON.stringify(data)); render();}
-function money(n){return "£"+Number(n||0).toFixed(0)}
+const seed={
+suppliers:[{name:"NeedlePro",phone:"01234 111222",email:"orders@needlepro.example",notes:"Needles and medical supplies"},{name:"Jewellery Co",phone:"01234 333444",email:"sales@jewelleryco.example",notes:"Titanium jewellery"},{name:"MedSupply",phone:"01234 555666",email:"hello@medsupply.example",notes:"Wipes and sprays"}],
+stock:[{name:"16G Needles",qty:12,reorder:25,supplier:"NeedlePro"},{name:"Titanium Studs",qty:84,reorder:30,supplier:"Jewellery Co"},{name:"Aftercare Spray",qty:22,reorder:20,supplier:"MedSupply"},{name:"Sterile Wipes",qty:18,reorder:50,supplier:"MedSupply"}],
+recipes:[{name:"Nose piercing",price:35,items:[{stock:"16G Needles",qty:1},{stock:"Titanium Studs",qty:1},{stock:"Sterile Wipes",qty:1}]},{name:"Lobe pair",price:55,items:[{stock:"16G Needles",qty:2},{stock:"Titanium Studs",qty:2},{stock:"Sterile Wipes",qty:2}]},{name:"Helix",price:40,items:[{stock:"16G Needles",qty:1},{stock:"Titanium Studs",qty:1},{stock:"Sterile Wipes",qty:1}]},{name:"Aftercare spray",price:8,items:[{stock:"Aftercare Spray",qty:1}]}],
+clients:[{name:"Sophie M",email:"sophie@example.com",phone:"07...",note:"Prefers email aftercare"}],
+users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"},{name:"Amy",email:"amy@example.com",role:"Piercer",status:"Active"}],
+sales:[],
+aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio"}
+};
+let data=JSON.parse(localStorage.getItem("piercingOS_v4")||"null")||seed;let basket=[];
+function save(){localStorage.setItem("piercingOS_v4",JSON.stringify(data));render();}
+function money(n){return "£"+Number(n||0).toFixed(0)}function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
 function show(id,btn){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
+function options(selected="",blank=false){return (blank?'<option value="">None</option>':"")+data.stock.map(s=>`<option ${s.name===selected?"selected":""}>${esc(s.name)}</option>`).join("")}
+function supplierOptions(selected=""){return data.suppliers.map(s=>`<option ${s.name===selected?"selected":""}>${esc(s.name)}</option>`).join("")}
+function clientOptions(){return '<option value="">Walk-in / no account</option>'+data.clients.map((c,i)=>`<option value="${i}">${esc(c.name)} ${c.email?"("+esc(c.email)+")":""}</option>`).join("")}
+function staffOptions(){return data.users.map(u=>`<option>${esc(u.name)}</option>`).join("")}
+function recipeText(r){return r.items.map(i=>`${i.qty} × ${esc(i.stock)}`).join("<br>")}
 function render(){
- document.getElementById("kpiSales").textContent=money(data.sales.reduce((a,s)=>a+s.total,0));
- document.getElementById("kpiTx").textContent=data.sales.length;
- document.getElementById("kpiLow").textContent=data.stock.filter(s=>s.qty<=s.reorder).length;
- document.getElementById("kpiClients").textContent=data.clients.length;
- document.getElementById("recentSales").innerHTML=data.sales.slice(-6).reverse().map(s=>`<tr><td>${s.items.map(i=>i.name).join(", ")}</td><td>${s.payment}</td><td>${money(s.total)}</td></tr>`).join("")||"<tr><td colspan='3'>No sales yet — try the POS tab.</td></tr>";
- document.getElementById("lowAlerts").innerHTML=data.stock.filter(s=>s.qty<=s.reorder).map(s=>`<p><span class="tag">Low</span> ${s.name} — ${s.qty} left</p>`).join("")||"<p class='muted'>No low stock items.</p>";
- document.getElementById("productButtons").innerHTML=data.products.map((p,i)=>`<button class="product" onclick="addToBasket(${i})"><strong>${p.name}</strong><span>${money(p.price)}</span></button>`).join("");
- document.getElementById("basket").innerHTML=basket.map((p,i)=>`<div class="basket-line"><span>${p.name}</span><strong>${money(p.price)}</strong></div>`).join("")||"<p class='muted'>Basket empty.</p>";
- document.getElementById("basketTotal").textContent=money(basket.reduce((a,p)=>a+p.price,0));
- document.getElementById("stockTable").innerHTML=data.stock.map(s=>`<tr><td>${s.name}</td><td>${s.qty}</td><td>${s.reorder}</td><td>${s.supplier}</td><td>${s.qty<=s.reorder?'<span class="tag">Low</span>':'OK'}</td></tr>`).join("");
- document.getElementById("clientTable").innerHTML=data.clients.map(c=>`<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.note}</td><td>${c.date}</td></tr>`).join("");
- document.getElementById("userTable").innerHTML=data.users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td></tr>`).join("");
+document.getElementById("kpiSales").textContent=money(data.sales.reduce((a,s)=>a+s.total,0));document.getElementById("kpiPiercings").textContent=data.sales.length;document.getElementById("kpiEmail").textContent=data.sales.filter(s=>!s.aftercareSent).length;document.getElementById("kpiLow").textContent=data.stock.filter(s=>s.qty<=s.reorder).length;
+document.getElementById("recentSales").innerHTML=data.sales.slice(-6).reverse().map(s=>`<tr><td>${esc(s.clientName||"Walk-in")}</td><td>${esc(s.items.map(i=>i.name).join(", "))}</td><td>${money(s.total)}</td><td>${s.aftercareSent?'<span class="tag green">Sent</span>':'<span class="tag red">Not sent</span>'}</td></tr>`).join("")||"<tr><td colspan='4'>No sales yet.</td></tr>";
+document.getElementById("lowAlerts").innerHTML=data.stock.filter(s=>s.qty<=s.reorder).map(s=>`<p><span class="tag">Low</span> ${esc(s.name)} — ${s.qty} left</p>`).join("")||"<p class='muted'>No low stock items.</p>";
+document.getElementById("productButtons").innerHTML=data.recipes.map((p,i)=>`<button class="product" onclick="addToBasket(${i})"><strong>${esc(p.name)}</strong><span>${money(p.price)}</span><div class="recipe-box">${recipeText(p)}</div></button>`).join("");
+document.getElementById("saleClient").innerHTML=clientOptions();document.getElementById("saleStaff").innerHTML=staffOptions();
+document.getElementById("basket").innerHTML=basket.map(p=>`<div class="basket-line"><span><strong>${esc(p.name)}</strong><br><span class="mini">Deducts: ${p.items.map(x=>`${x.qty} ${esc(x.stock)}`).join(", ")}</span></span><strong>${money(p.price)}</strong></div>`).join("")||"<p class='muted'>Basket empty.</p>";document.getElementById("basketTotal").textContent=money(basket.reduce((a,p)=>a+p.price,0));
+document.getElementById("piercingTable").innerHTML=data.sales.slice().reverse().map((s,revIndex)=>{const i=data.sales.length-1-revIndex;return `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${esc(s.clientName||"Walk-in")}</td><td>${esc(s.items.map(x=>x.name).join(", "))}</td><td>${esc(s.staff)}</td><td>${s.aftercareSent?'<span class="tag green">Sent</span>':'<span class="tag red">Not sent</span>'}</td><td>${s.clientEmail&&!s.aftercareSent?`<button class="btn" onclick="sendAftercare(${i})">Send</button>`:""}</td></tr>`}).join("")||"<tr><td colspan='6'>Nothing logged yet.</td></tr>";
+document.getElementById("aftercareSubject").value=data.aftercareTemplate.subject;document.getElementById("aftercareBody").value=data.aftercareTemplate.body;
+document.getElementById("aftercareQueue").innerHTML=data.sales.map((s,i)=>({s,i})).filter(x=>!x.s.aftercareSent).map(x=>`<p><strong>${esc(x.s.clientName||"Walk-in")}</strong><br><span class="mini">${esc(x.s.items.map(i=>i.name).join(", "))}</span><br>${x.s.clientEmail?`<button class="btn" onclick="sendAftercare(${x.i})">Open email</button>`:"<span class='tag red'>No email on account</span>"}</p>`).join("")||"<p class='muted'>No aftercare emails waiting.</p>";
+["recipeItem1","recipeItem2","recipeItem3"].forEach((id,idx)=>document.getElementById(id).innerHTML=options("",idx===2));document.getElementById("stockSupplier").innerHTML=supplierOptions();
+document.getElementById("recipeTable").innerHTML=data.recipes.map((r,i)=>`<tr><td>${esc(r.name)}</td><td>${money(r.price)}</td><td>${recipeText(r)}</td><td><button class="btn light" onclick="deleteRecipe(${i})">Delete</button></td></tr>`).join("");
+document.getElementById("stockTable").innerHTML=data.stock.map((s,i)=>`<tr><td>${esc(s.name)}</td><td>${s.qty}</td><td>${s.reorder}</td><td>${esc(s.supplier)}</td><td>${s.qty<=s.reorder?'<span class="tag">Low</span>':'OK'}</td><td><button class="btn light" onclick="editStock(${i})">Edit</button></td></tr>`).join("");
+document.getElementById("supplierTable").innerHTML=data.suppliers.map((s,i)=>`<tr><td>${esc(s.name)}</td><td>${esc(s.phone)}</td><td>${esc(s.email)}</td><td>${esc(s.notes)}</td><td><button class="btn light" onclick="editSupplier(${i})">Edit</button></td></tr>`).join("");
+document.getElementById("clientTable").innerHTML=data.clients.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.email)}</td><td>${esc(c.phone)}</td><td>${esc(c.note)}</td></tr>`).join("");
+document.getElementById("userTable").innerHTML=data.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${esc(u.role)}</td><td>${esc(u.status)}</td></tr>`).join("");
 }
-function addToBasket(i){basket.push(data.products[i]); render();}
-function clearBasket(){basket=[]; render();}
-function checkout(){if(!basket.length){alert("Basket is empty");return;} const payment=document.getElementById("payment").value; basket.forEach(p=>{const st=data.stock.find(s=>s.name===p.uses); if(st) st.qty=Math.max(0,st.qty-1);}); data.sales.push({items:[...basket],payment,total:basket.reduce((a,p)=>a+p.price,0),date:new Date().toISOString()}); basket=[]; save(); alert("Sale processed. Stock deducted.");}
-function addStock(){const name=stockName.value.trim(); if(!name)return; data.stock.push({name,qty:+stockQty.value||0,reorder:+stockReorder.value||0,supplier:stockSupplier.value||""}); stockName.value=stockQty.value=stockReorder.value=stockSupplier.value=""; save();}
-function addClient(){const name=clientName.value.trim(); if(!name)return; data.clients.push({name,phone:clientPhone.value,note:clientNote.value,date:clientDate.value||new Date().toISOString().slice(0,10)}); clientName.value=clientPhone.value=clientNote.value=clientDate.value=""; save();}
-function addUser(){const name=userName.value.trim(); if(!name)return; data.users.push({name,email:userEmail.value,role:userRole.value,status:userStatus.value}); userName.value=userEmail.value=""; save();}
+function addToBasket(i){basket.push(JSON.parse(JSON.stringify(data.recipes[i])));render()}function clearBasket(){basket=[];render()}
+function checkout(){if(!basket.length){alert("Basket is empty");return}for(const saleItem of basket){for(const used of saleItem.items){const st=data.stock.find(s=>s.name===used.stock);if(!st||st.qty<used.qty){alert("Not enough stock for "+used.stock);return}}}basket.forEach(si=>si.items.forEach(u=>{data.stock.find(s=>s.name===u.stock).qty-=u.qty}));const ci=document.getElementById("saleClient").value;const client=ci===""?null:data.clients[+ci];data.sales.push({items:[...basket],payment:payment.value,total:basket.reduce((a,p)=>a+p.price,0),date:new Date().toISOString(),clientName:client?.name||"Walk-in",clientEmail:client?.email||"",staff:saleStaff.value,aftercareSent:false});basket=[];save();alert("Transaction processed. Piercing logged and aftercare marked as not sent.")}
+function saveAftercareTemplate(){data.aftercareTemplate.subject=aftercareSubject.value;data.aftercareTemplate.body=aftercareBody.value;save();alert("Aftercare template saved.")}
+function sendAftercare(i){const s=data.sales[i];if(!s.clientEmail){alert("This client has no email address.");return}const body=data.aftercareTemplate.body.replaceAll("{name}",s.clientName).replaceAll("{piercing}",s.items.map(x=>x.name).join(", "));window.location.href=`mailto:${encodeURIComponent(s.clientEmail)}?subject=${encodeURIComponent(data.aftercareTemplate.subject)}&body=${encodeURIComponent(body)}`;if(confirm("Mark aftercare as sent?")){s.aftercareSent=true;save();}}
+function addRecipe(){const items=[];[["recipeItem1","recipeQty1"],["recipeItem2","recipeQty2"],["recipeItem3","recipeQty3"]].forEach(([item,qty])=>{const stock=document.getElementById(item).value,q=+document.getElementById(qty).value||0;if(stock&&q>0)items.push({stock,qty:q})});const name=recipeName.value.trim();if(!name||!items.length){alert("Add a recipe name and at least one stock item.");return}data.recipes.push({name,price:+recipePrice.value||0,items});recipeName.value=recipePrice.value="";save()}
+function deleteRecipe(i){if(confirm("Delete this recipe?")){data.recipes.splice(i,1);save()}}
+function addStock(){const name=stockName.value.trim();if(!name)return;data.stock.push({name,qty:+stockQty.value||0,reorder:+stockReorder.value||0,supplier:stockSupplier.value||""});stockName.value=stockQty.value=stockReorder.value="";save()}
+function editStock(i){const s=data.stock[i],qty=prompt("Quantity for "+s.name,s.qty);if(qty===null)return;const reorder=prompt("Reorder level for "+s.name,s.reorder);if(reorder===null)return;s.qty=+qty||0;s.reorder=+reorder||0;save()}
+function addSupplier(){const name=supplierName.value.trim();if(!name)return;data.suppliers.push({name,phone:supplierPhone.value,email:supplierEmail.value,notes:supplierNotes.value});supplierName.value=supplierPhone.value=supplierEmail.value=supplierNotes.value="";save()}
+function editSupplier(i){const s=data.suppliers[i],name=prompt("Supplier name",s.name);if(!name)return;s.name=name;s.phone=prompt("Phone/contact",s.phone)||"";s.email=prompt("Email",s.email)||"";s.notes=prompt("Notes",s.notes)||"";save()}
+function addClient(){const name=clientName.value.trim();if(!name)return;data.clients.push({name,email:clientEmail.value,phone:clientPhone.value,note:clientNote.value});clientName.value=clientEmail.value=clientPhone.value=clientNote.value="";save()}
+function addUser(){const name=userName.value.trim();if(!name)return;data.users.push({name,email:userEmail.value,role:userRole.value,status:userStatus.value});userName.value=userEmail.value="";save()}
 render();
-</script>
-</body>
-</html>
+</script></body></html>
