@@ -47,9 +47,9 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 </div>
 
 <div id="appWrap" class="app hidden"><aside class="sidebar">
-<div class="brand-head"><div class="side-logo-img" id="sideLogoPreview">PO</div><div><div class="logo">PiercingOS</div><div class="small">MVP v8 — aftercare image option</div></div></div>
+<div class="brand-head"><div class="side-logo-img" id="sideLogoPreview">PO</div><div><div class="logo">PiercingOS</div><div class="small">MVP v10 — SaaS platform concept</div></div></div>
 <div class="nav">
-<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button><button onclick="show('settings',this)">🎨 Branding</button><button onclick="logout()">🚪 Log out</button>
+<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button><button onclick="show('marketing',this)">📣 Marketing</button><button onclick="show('vouchers',this)">🎁 Vouchers</button><button onclick="show('publicpage',this)">🌐 Public page</button><button onclick="show('platformadmin',this)">🧠 Platform admin</button><button onclick="show('settings',this)">🎨 Branding</button><button onclick="logout()">🚪 Log out</button>
 </div></aside><main class="main">
 
 <section id="dashboard" class="screen active"><div class="top"><h1>Dashboard</h1><span class="badge">Not connected to Firebase yet</span></div>
@@ -79,7 +79,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 
 <section id="suppliers" class="screen"><div class="top"><h1>Suppliers</h1><button class="btn" onclick="addSupplier()">Add supplier</button></div><div class="card"><div class="form"><div><label>Supplier name</label><input id="supplierName"></div><div><label>Contact / phone</label><input id="supplierPhone"></div><div><label>Email</label><input id="supplierEmail"></div><div><label>Notes</label><input id="supplierNotes"></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Contact</th><th>Email</th><th>Notes</th><th></th></tr></thead><tbody id="supplierTable"></tbody></table></div></section>
 
-<section id="clients" class="screen"><div class="top"><h1>Clients / accounts</h1><button class="btn" onclick="addClient()">Add client</button></div><div class="card"><div class="form"><div><label>Name</label><input id="clientName"></div><div><label>Email</label><input id="clientEmail"></div><div><label>Phone</label><input id="clientPhone"></div><div><label>Notes</label><input id="clientNote"></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Notes</th></tr></thead><tbody id="clientTable"></tbody></table></div></section>
+<section id="clients" class="screen"><div class="top"><h1>Clients / accounts</h1><button class="btn" onclick="addClient()">Add client</button></div><div class="card"><div class="form"><div><label>Name</label><input id="clientName"></div><div><label>Email</label><input id="clientEmail"></div><div><label>Phone</label><input id="clientPhone"></div><div><label>Notes</label><input id="clientNote"></div><div><label>Marketing consent</label><select id="clientMarketing"><option>Yes</option><option>No</option></select></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Marketing</th><th>Notes</th></tr></thead><tbody id="clientTable"></tbody></table></div></section>
 
 <section id="users" class="screen"><div class="top"><h1>Users</h1><button class="btn" onclick="addUser()">Invite user</button></div><div class="card"><div class="form"><div><label>Name</label><input id="userName"></div><div><label>Email</label><input id="userEmail"></div><div><label>Role</label><select id="userRole"><option>Owner/Admin</option><option>Piercer</option><option>Reception/POS</option></select></div><div><label>Status</label><select id="userStatus"><option>Active</option><option>Pending invite</option></select></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="userTable"></tbody></table></div></section>
 
@@ -114,13 +114,108 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
   </div>
 </section>
 
+
+<section id="marketing" class="screen">
+  <div class="top"><h1>Marketing centre</h1><span class="badge">Admin only in real app</span></div>
+  <div class="two">
+    <div class="card">
+      <h2>Create campaign</h2>
+      <div class="form">
+        <div><label>Campaign name</label><input placeholder="Summer jewellery offer"></div>
+        <div><label>Audience</label><select><option>Marketing consent only</option><option>Everyone with email consent</option><option>Clients not visited in 6 months</option><option>Birthday this month</option><option>Gift voucher holders</option><option>Nose piercing clients</option></select></div>
+        <div><label>Subject</label><input placeholder="20% off titanium jewellery this weekend"></div>
+        <div><label>Send type</label><select><option>Email</option><option>SMS - future</option><option>WhatsApp - future</option></select></div>
+      </div>
+      <br><label>Message</label><textarea placeholder="Write promo email here..."></textarea>
+      <br><br><button class="btn">Preview campaign</button>
+    </div>
+    <div class="card">
+      <h2>Marketing consent</h2>
+      <p><span class="tag green">Yes</span> 184 clients</p>
+      <p><span class="tag red">No</span> 42 clients</p>
+      <p class="mini">Checkout/client form should include consent for promos, birthday offers, jewellery launches and events.</p>
+      <h2>Recent campaigns</h2>
+      <table><tr><th>Campaign</th><th>Sent</th><th>Opened</th><th>Redeemed</th></tr><tr><td>Flash day</td><td>184</td><td>96</td><td>18</td></tr><tr><td>New jewellery</td><td>171</td><td>88</td><td>11</td></tr></table>
+    </div>
+  </div>
+</section>
+
+<section id="vouchers" class="screen">
+  <div class="top"><h1>Gift vouchers</h1><button class="btn">Issue voucher</button></div>
+  <div class="two">
+    <div class="card">
+      <h2>Issue voucher</h2>
+      <div class="form">
+        <div><label>Voucher value</label><input placeholder="50"></div>
+        <div><label>Purchased by</label><input placeholder="Customer name"></div>
+        <div><label>Recipient</label><input placeholder="Recipient name"></div>
+        <div><label>Expiry</label><input type="date"></div>
+      </div>
+      <br><button class="btn">Create voucher</button>
+    </div>
+    <div class="card">
+      <h2>Redeem voucher</h2>
+      <label>Voucher code</label><input placeholder="PT-004293">
+      <br><br><button class="btn">Check balance / redeem</button>
+      <br><br>
+      <table><tr><th>Voucher</th><th>Value</th><th>Balance</th><th>Status</th></tr><tr><td>PT-004293</td><td>£50</td><td>£15</td><td>Active</td></tr><tr><td>PT-004312</td><td>£100</td><td>£100</td><td>Unused</td></tr></table>
+    </div>
+  </div>
+</section>
+
+<section id="publicpage" class="screen">
+  <div class="top"><h1>Public studio page</h1><span class="badge">Upsell feature</span></div>
+  <div class="two">
+    <div class="card">
+      <h2>Website editor</h2>
+      <div class="form">
+        <div><label>Public URL slug</label><input value="luxe-piercing"></div>
+        <div><label>Opening hours</label><input placeholder="Mon-Sat 10am-6pm"></div>
+        <div><label>Hero title</label><input placeholder="Luxury piercing in your city"></div>
+        <div><label>Book now link</label><input placeholder="Booking URL"></div>
+      </div>
+      <br><label>About studio</label><textarea placeholder="Tell customers about the studio..."></textarea>
+      <br><br><button class="btn">Publish page</button>
+    </div>
+    <div class="card">
+      <h2>Customer link preview</h2>
+      <p><strong>piercingos.co.uk/studio/luxe-piercing</strong></p>
+      <p class="mini">Could include logo, prices, services, opening hours, FAQ, aftercare info, booking button and gift voucher purchase.</p>
+      <button class="btn light">Copy public link</button>
+    </div>
+  </div>
+</section>
+
+<section id="platformadmin" class="screen">
+  <div class="top"><h1>Platform admin</h1><span class="badge">For you only</span></div>
+  <div class="grid">
+    <div class="card"><div class="muted">Studios</div><div class="kpi">12</div></div>
+    <div class="card"><div class="muted">Monthly recurring revenue</div><div class="kpi">£708</div></div>
+    <div class="card"><div class="muted">Trial accounts</div><div class="kpi">5</div></div>
+    <div class="card"><div class="muted">Support tickets</div><div class="kpi">3</div></div>
+  </div>
+  <div class="two">
+    <div class="card">
+      <h2>Studios</h2>
+      <table><tr><th>Studio</th><th>Plan</th><th>Status</th><th>MRR</th></tr><tr><td>Luxe Piercing</td><td>Studio+</td><td>Active</td><td>£99</td></tr><tr><td>Ink & Steel</td><td>Professional</td><td>Trial</td><td>£59</td></tr><tr><td>Needle Room</td><td>Starter</td><td>Active</td><td>£29</td></tr></table>
+    </div>
+    <div class="card">
+      <h2>SaaS controls</h2>
+      <p>Manage subscriptions, suspend accounts, view billing, create coupons, monitor usage and support studios.</p>
+      <button class="btn">Create studio</button>
+      <br><br><button class="btn light">Manage plans</button>
+      <br><br><button class="btn light">View billing</button>
+    </div>
+  </div>
+</section>
+
 </main></div>
 <script>
 const seed={
 suppliers:[{name:"NeedlePro",phone:"01234 111222",email:"orders@needlepro.example",notes:"Needles and medical supplies"},{name:"Jewellery Co",phone:"01234 333444",email:"sales@jewelleryco.example",notes:"Titanium jewellery"},{name:"MedSupply",phone:"01234 555666",email:"hello@medsupply.example",notes:"Wipes and sprays"}],
 stock:[{name:"16G Needles",qty:12,reorder:25,supplier:"NeedlePro"},{name:"Titanium Studs",qty:84,reorder:30,supplier:"Jewellery Co"},{name:"Aftercare Spray",qty:22,reorder:20,supplier:"MedSupply"},{name:"Sterile Wipes",qty:18,reorder:50,supplier:"MedSupply"}],
 recipes:[{name:"Nose piercing",category:"Piercings",price:35,items:[{stock:"16G Needles",qty:1},{stock:"Titanium Studs",qty:1},{stock:"Sterile Wipes",qty:1}]},{name:"Lobe pair",category:"Piercings",price:55,items:[{stock:"16G Needles",qty:2},{stock:"Titanium Studs",qty:2},{stock:"Sterile Wipes",qty:2}]},{name:"Helix",category:"Piercings",price:40,items:[{stock:"16G Needles",qty:1},{stock:"Titanium Studs",qty:1},{stock:"Sterile Wipes",qty:1}]},{name:"Aftercare spray",category:"Creams / Aftercare",price:8,items:[{stock:"Aftercare Spray",qty:1}]},{name:"Titanium stud",category:"Jewellery",price:10,items:[{stock:"Titanium Studs",qty:1}]}],
-clients:[{name:"Sophie M",email:"sophie@example.com",phone:"07...",note:"Prefers email aftercare"}],
+clients:[{name:"Sophie M",email:"sophie@example.com",phone:"07...",marketing:"Yes",note:"Prefers email aftercare"}],
 users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"},{name:"Amy",email:"amy@example.com",role:"Piercer",status:"Active"}],
 sales:[],
 aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio",imageUrl:"",imageData:""},
@@ -153,7 +248,7 @@ document.getElementById("aftercareQueue").innerHTML=data.sales.map((s,i)=>({s,i}
 document.getElementById("recipeTable").innerHTML=data.recipes.map((r,i)=>`<tr><td>${esc(r.name)}</td><td>${esc(r.category||"Other")}</td><td>${money(r.price)}</td><td>${recipeText(r)}</td><td><button class="btn light" onclick="deleteRecipe(${i})">Delete</button></td></tr>`).join("");
 document.getElementById("stockTable").innerHTML=data.stock.map((s,i)=>`<tr><td>${esc(s.name)}</td><td>${s.qty}</td><td>${s.reorder}</td><td>${esc(s.supplier)}</td><td>${s.qty<=s.reorder?'<span class="tag">Low</span>':'OK'}</td><td><button class="btn light" onclick="editStock(${i})">Edit</button></td></tr>`).join("");
 document.getElementById("supplierTable").innerHTML=data.suppliers.map((s,i)=>`<tr><td>${esc(s.name)}</td><td>${esc(s.phone)}</td><td>${esc(s.email)}</td><td>${esc(s.notes)}</td><td><button class="btn light" onclick="editSupplier(${i})">Edit</button></td></tr>`).join("");
-document.getElementById("clientTable").innerHTML=data.clients.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.email)}</td><td>${esc(c.phone)}</td><td>${esc(c.note)}</td></tr>`).join("");
+document.getElementById("clientTable").innerHTML=data.clients.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.email)}</td><td>${esc(c.phone)}</td><td>${c.marketing==="Yes"?'<span class="tag green">Yes</span>':'<span class="tag red">No</span>'}</td><td>${esc(c.note)}</td></tr>`).join("");
 document.getElementById("userTable").innerHTML=data.users.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td>${esc(u.role)}</td><td>${esc(u.status)}</td></tr>`).join("");
 }
 function setCategory(c){activeCategory=decodeURIComponent(c);render()}
@@ -169,7 +264,7 @@ function addStock(){const name=stockName.value.trim();if(!name)return;data.stock
 function editStock(i){const s=data.stock[i],qty=prompt("Quantity for "+s.name,s.qty);if(qty===null)return;const reorder=prompt("Reorder level for "+s.name,s.reorder);if(reorder===null)return;s.qty=+qty||0;s.reorder=+reorder||0;save()}
 function addSupplier(){const name=supplierName.value.trim();if(!name)return;data.suppliers.push({name,phone:supplierPhone.value,email:supplierEmail.value,notes:supplierNotes.value});supplierName.value=supplierPhone.value=supplierEmail.value=supplierNotes.value="";save()}
 function editSupplier(i){const s=data.suppliers[i],name=prompt("Supplier name",s.name);if(!name)return;s.name=name;s.phone=prompt("Phone/contact",s.phone)||"";s.email=prompt("Email",s.email)||"";s.notes=prompt("Notes",s.notes)||"";save()}
-function addClient(){const name=clientName.value.trim();if(!name)return;data.clients.push({name,email:clientEmail.value,phone:clientPhone.value,note:clientNote.value});clientName.value=clientEmail.value=clientPhone.value=clientNote.value="";save()}
+function addClient(){const name=clientName.value.trim();if(!name)return;data.clients.push({name,email:clientEmail.value,phone:clientPhone.value,marketing:clientMarketing.value,note:clientNote.value});clientName.value=clientEmail.value=clientPhone.value=clientNote.value="";save()}
 function addUser(){const name=userName.value.trim();if(!name)return;data.users.push({name,email:userEmail.value,role:userRole.value,status:userStatus.value});userName.value=userEmail.value="";save()}
 
 function login(){
