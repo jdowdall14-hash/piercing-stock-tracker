@@ -16,20 +16,43 @@
 table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase}
 .btn{border:0;background:var(--brand2);color:white;border-radius:13px;padding:12px 14px;font-weight:900;font-size:15px;cursor:pointer}.btn.light{background:#efe7dd;color:#241f1a}.btn.danger{background:var(--bad)}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:5px}input,select,textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;background:white;font-size:16px}textarea{min-height:110px}
-.screen{display:none}.screen.active{display:block}.tag{display:inline-flex;background:#fff4df;color:#8a4b02;border:1px solid #f0d4a5;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}.tag.green{background:#e3f1ec;color:#16483d;border-color:#b7d8ce}.tag.red{background:#fde8e8;color:#8a2c2c;border-color:#f3bcbc}
+.screen{display:none}.screen.active{display:block}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(135deg,var(--brand),var(--brand2))}
+.login-card{width:100%;max-width:430px;background:white;border-radius:24px;padding:26px;box-shadow:0 18px 60px rgba(0,0,0,.22)}
+.login-logo{font-size:30px;font-weight:900;color:var(--brand);margin-bottom:6px}
+.login-note{color:var(--muted);margin-bottom:18px}
+.login-card .btn{width:100%;margin-top:12px}
+.hidden{display:none!important}
+.brand-preview{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fbf8f4}
+.logo-preview{width:54px;height:54px;border-radius:14px;background:var(--brand);display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:22px;overflow:hidden}
+.logo-preview img{width:100%;height:100%;object-fit:cover}.tag{display:inline-flex;background:#fff4df;color:#8a4b02;border:1px solid #f0d4a5;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}.tag.green{background:#e3f1ec;color:#16483d;border-color:#b7d8ce}.tag.red{background:#fde8e8;color:#8a2c2c;border-color:#f3bcbc}
 .products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.product{border:1px solid var(--line);border-radius:16px;padding:14px;background:white;text-align:left;cursor:pointer}.product strong{display:block;font-size:17px}.product span{color:var(--muted)}
 .basket-line{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0;gap:12px}.total{display:flex;justify-content:space-between;font-size:28px;font-weight:900;margin-top:14px}.checkout{position:sticky;bottom:0;background:white;border-top:1px solid var(--line);padding-top:14px;margin-top:16px}.recipe-box{background:#fbf8f4;border:1px dashed #d8cbbd;border-radius:14px;padding:10px;margin-top:7px;font-size:13px}
 @media(max-width:850px){.app{display:block}.sidebar{height:auto;position:sticky;z-index:5}.nav{display:flex;overflow:auto;gap:6px}.nav button{white-space:nowrap;width:auto}.main{padding:16px}.grid,.two,.form,.products{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
-<div class="app"><aside class="sidebar">
-<div class="logo">PiercingOS</div><div class="small">MVP v4 — clients, tracking & aftercare</div>
+<div id="loginScreen" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo" id="loginStudioName">PiercingOS</div>
+    <div class="login-note">Staff login — demo access control</div>
+    <label>Email</label>
+    <input id="loginEmail" placeholder="owner@example.com" value="owner@example.com">
+    <br><br>
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="Demo password" value="demo">
+    <button class="btn" onclick="login()">Log in</button>
+    <p class="mini">Demo login: use any email and password. The real version will use Firebase Authentication.</p>
+  </div>
+</div>
+
+<div id="appWrap" class="app hidden"><aside class="sidebar">
+<div class="logo">PiercingOS</div><div class="small">MVP v6 — login & studio branding</div>
 <div class="nav">
-<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button>
+<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button><button onclick="show('settings',this)">🎨 Branding</button><button onclick="logout()">🚪 Log out</button>
 </div></aside><main class="main">
 
-<section id="dashboard" class="screen active"><div class="top"><h1>Dashboard</h1><span class="badge">Demo data saves on this device</span></div>
+<section id="dashboard" class="screen active"><div class="top"><h1>Dashboard</h1><span class="badge">Not connected to Firebase yet</span></div>
 <div class="grid"><div class="card"><div class="muted">Sales today</div><div class="kpi" id="kpiSales">£0</div></div><div class="card"><div class="muted">Piercings logged</div><div class="kpi" id="kpiPiercings">0</div></div><div class="card"><div class="muted">Aftercare not sent</div><div class="kpi" id="kpiEmail">0</div></div><div class="card"><div class="muted">Low stock</div><div class="kpi" id="kpiLow">0</div></div></div>
 <div class="two"><div class="card"><h2>Recent transactions</h2><table><thead><tr><th>Client</th><th>Sale</th><th>Total</th><th>Aftercare</th></tr></thead><tbody id="recentSales"></tbody></table></div><div class="card"><h2>Low stock alerts</h2><div id="lowAlerts"></div></div></div></section>
 
@@ -40,7 +63,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 
 <section id="piercings" class="screen"><div class="top"><h1>Piercing history</h1><span class="badge">Tracks client, staff, piercing and email status</span></div><div class="card"><table><thead><tr><th>Date</th><th>Client</th><th>Piercing / sale</th><th>Staff</th><th>Aftercare email</th><th></th></tr></thead><tbody id="piercingTable"></tbody></table></div></section>
 
-<section id="aftercare" class="screen"><div class="top"><h1>Aftercare emails</h1><button class="btn" onclick="saveAftercareTemplate()">Save template</button></div><div class="two"><div class="card"><h2>Email template</h2><label>Subject</label><input id="aftercareSubject"><br><br><label>Message</label><textarea id="aftercareBody"></textarea><p class="mini">This demo opens your email app with the message filled in. The real Firebase version can send automatically.</p></div><div class="card"><h2>Waiting to send</h2><div id="aftercareQueue"></div></div></div></section>
+<section id="aftercare" class="screen"><div class="top"><h1>Aftercare emails</h1><button class="btn" onclick="saveAftercareTemplate()">Save template</button></div><div class="two"><div class="card"><h2>Email template</h2><label>Subject</label><input id="aftercareSubject"><br><br><label>Message</label><textarea id="aftercareBody"></textarea><p class="mini">Tap “Open email app” on a client below. It opens Mail/Gmail/Outlook on your phone with the client email, subject and aftercare message filled in. Then mark it as sent.</p></div><div class="card"><h2>Waiting to send</h2><div id="aftercareQueue"></div></div></div></section>
 
 <section id="recipes" class="screen"><div class="top"><h1>Recipes</h1><button class="btn" onclick="addRecipe()">Save recipe</button></div><div class="card"><div class="form"><div><label>Service / product name</label><input id="recipeName" placeholder="e.g. Nose piercing"></div><div><label>Sale price</label><input id="recipePrice" type="number" placeholder="35"></div><div><label>Stock item 1</label><select id="recipeItem1"></select></div><div><label>Qty used</label><input id="recipeQty1" type="number" value="1"></div><div><label>Stock item 2</label><select id="recipeItem2"></select></div><div><label>Qty used</label><input id="recipeQty2" type="number" value="1"></div><div><label>Stock item 3 optional</label><select id="recipeItem3"></select></div><div><label>Qty used</label><input id="recipeQty3" type="number" value="0"></div></div></div><br><div class="card"><table><thead><tr><th>Service</th><th>Price</th><th>Recipe deducts</th><th></th></tr></thead><tbody id="recipeTable"></tbody></table></div></section>
 
@@ -52,6 +75,37 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 
 <section id="users" class="screen"><div class="top"><h1>Users</h1><button class="btn" onclick="addUser()">Invite user</button></div><div class="card"><div class="form"><div><label>Name</label><input id="userName"></div><div><label>Email</label><input id="userEmail"></div><div><label>Role</label><select id="userRole"><option>Owner/Admin</option><option>Piercer</option><option>Reception/POS</option></select></div><div><label>Status</label><select id="userStatus"><option>Active</option><option>Pending invite</option></select></div></div></div><br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="userTable"></tbody></table></div></section>
 
+
+<section id="settings" class="screen">
+  <div class="top"><h1>Studio branding</h1><button class="btn" onclick="saveBranding()">Save branding</button></div>
+  <div class="two">
+    <div class="card">
+      <h2>Brand settings</h2>
+      <div class="form">
+        <div><label>Studio name</label><input id="brandStudioName" placeholder="e.g. Luxe Piercing Studio"></div>
+        <div><label>Short name / initials</label><input id="brandInitials" placeholder="e.g. LP"></div>
+        <div><label>Main colour</label><input id="brandColour" type="color"></div>
+        <div><label>Accent colour</label><input id="brandAccent" type="color"></div>
+        <div><label>Logo image</label><input id="brandLogo" type="file" accept="image/*" onchange="loadLogo(event)"></div>
+        <div><label>Public studio email</label><input id="brandEmail" placeholder="studio@example.com"></div>
+      </div>
+      <p class="mini">This lets each studio have its own name, colours and logo. In the real Firebase version this would be saved per studio account.</p>
+    </div>
+    <div class="card">
+      <h2>Preview</h2>
+      <div class="brand-preview">
+        <div class="logo-preview" id="logoPreview">PO</div>
+        <div>
+          <strong id="brandPreviewName">PiercingOS</strong><br>
+          <span class="mini" id="brandPreviewEmail">studio@example.com</span>
+        </div>
+      </div>
+      <br>
+      <button class="btn light" onclick="resetBranding()">Reset branding</button>
+    </div>
+  </div>
+</section>
+
 </main></div>
 <script>
 const seed={
@@ -61,7 +115,8 @@ recipes:[{name:"Nose piercing",price:35,items:[{stock:"16G Needles",qty:1},{stoc
 clients:[{name:"Sophie M",email:"sophie@example.com",phone:"07...",note:"Prefers email aftercare"}],
 users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"},{name:"Amy",email:"amy@example.com",role:"Piercer",status:"Active"}],
 sales:[],
-aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio"}
+aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio"},
+branding:{studioName:"PiercingOS",initials:"PO",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""}
 };
 let data=JSON.parse(localStorage.getItem("piercingOS_v4")||"null")||seed;let basket=[];
 function save(){localStorage.setItem("piercingOS_v4",JSON.stringify(data));render();}
@@ -73,15 +128,16 @@ function clientOptions(){return '<option value="">Walk-in / no account</option>'
 function staffOptions(){return data.users.map(u=>`<option>${esc(u.name)}</option>`).join("")}
 function recipeText(r){return r.items.map(i=>`${i.qty} × ${esc(i.stock)}`).join("<br>")}
 function render(){
+applyBranding();
 document.getElementById("kpiSales").textContent=money(data.sales.reduce((a,s)=>a+s.total,0));document.getElementById("kpiPiercings").textContent=data.sales.length;document.getElementById("kpiEmail").textContent=data.sales.filter(s=>!s.aftercareSent).length;document.getElementById("kpiLow").textContent=data.stock.filter(s=>s.qty<=s.reorder).length;
 document.getElementById("recentSales").innerHTML=data.sales.slice(-6).reverse().map(s=>`<tr><td>${esc(s.clientName||"Walk-in")}</td><td>${esc(s.items.map(i=>i.name).join(", "))}</td><td>${money(s.total)}</td><td>${s.aftercareSent?'<span class="tag green">Sent</span>':'<span class="tag red">Not sent</span>'}</td></tr>`).join("")||"<tr><td colspan='4'>No sales yet.</td></tr>";
 document.getElementById("lowAlerts").innerHTML=data.stock.filter(s=>s.qty<=s.reorder).map(s=>`<p><span class="tag">Low</span> ${esc(s.name)} — ${s.qty} left</p>`).join("")||"<p class='muted'>No low stock items.</p>";
 document.getElementById("productButtons").innerHTML=data.recipes.map((p,i)=>`<button class="product" onclick="addToBasket(${i})"><strong>${esc(p.name)}</strong><span>${money(p.price)}</span><div class="recipe-box">${recipeText(p)}</div></button>`).join("");
 document.getElementById("saleClient").innerHTML=clientOptions();document.getElementById("saleStaff").innerHTML=staffOptions();
 document.getElementById("basket").innerHTML=basket.map(p=>`<div class="basket-line"><span><strong>${esc(p.name)}</strong><br><span class="mini">Deducts: ${p.items.map(x=>`${x.qty} ${esc(x.stock)}`).join(", ")}</span></span><strong>${money(p.price)}</strong></div>`).join("")||"<p class='muted'>Basket empty.</p>";document.getElementById("basketTotal").textContent=money(basket.reduce((a,p)=>a+p.price,0));
-document.getElementById("piercingTable").innerHTML=data.sales.slice().reverse().map((s,revIndex)=>{const i=data.sales.length-1-revIndex;return `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${esc(s.clientName||"Walk-in")}</td><td>${esc(s.items.map(x=>x.name).join(", "))}</td><td>${esc(s.staff)}</td><td>${s.aftercareSent?'<span class="tag green">Sent</span>':'<span class="tag red">Not sent</span>'}</td><td>${s.clientEmail&&!s.aftercareSent?`<button class="btn" onclick="sendAftercare(${i})">Send</button>`:""}</td></tr>`}).join("")||"<tr><td colspan='6'>Nothing logged yet.</td></tr>";
+document.getElementById("piercingTable").innerHTML=data.sales.slice().reverse().map((s,revIndex)=>{const i=data.sales.length-1-revIndex;return `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${esc(s.clientName||"Walk-in")}</td><td>${esc(s.items.map(x=>x.name).join(", "))}</td><td>${esc(s.staff)}</td><td>${s.aftercareSent?'<span class="tag green">Sent</span>':'<span class="tag red">Not sent</span>'}</td><td>${s.clientEmail&&!s.aftercareSent?`<button class="btn" onclick="sendAftercare(${i})">Open email app</button>`:""}</td></tr>`}).join("")||"<tr><td colspan='6'>Nothing logged yet.</td></tr>";
 document.getElementById("aftercareSubject").value=data.aftercareTemplate.subject;document.getElementById("aftercareBody").value=data.aftercareTemplate.body;
-document.getElementById("aftercareQueue").innerHTML=data.sales.map((s,i)=>({s,i})).filter(x=>!x.s.aftercareSent).map(x=>`<p><strong>${esc(x.s.clientName||"Walk-in")}</strong><br><span class="mini">${esc(x.s.items.map(i=>i.name).join(", "))}</span><br>${x.s.clientEmail?`<button class="btn" onclick="sendAftercare(${x.i})">Open email</button>`:"<span class='tag red'>No email on account</span>"}</p>`).join("")||"<p class='muted'>No aftercare emails waiting.</p>";
+document.getElementById("aftercareQueue").innerHTML=data.sales.map((s,i)=>({s,i})).filter(x=>!x.s.aftercareSent).map(x=>`<p><strong>${esc(x.s.clientName||"Walk-in")}</strong><br><span class="mini">${esc(x.s.items.map(i=>i.name).join(", "))}</span><br>${x.s.clientEmail?`<button class="btn" onclick="sendAftercare(${x.i})">Open email app</button>`:"<span class='tag red'>No email on account</span>"}</p>`).join("")||"<p class='muted'>No aftercare emails waiting.</p>";
 ["recipeItem1","recipeItem2","recipeItem3"].forEach((id,idx)=>document.getElementById(id).innerHTML=options("",idx===2));document.getElementById("stockSupplier").innerHTML=supplierOptions();
 document.getElementById("recipeTable").innerHTML=data.recipes.map((r,i)=>`<tr><td>${esc(r.name)}</td><td>${money(r.price)}</td><td>${recipeText(r)}</td><td><button class="btn light" onclick="deleteRecipe(${i})">Delete</button></td></tr>`).join("");
 document.getElementById("stockTable").innerHTML=data.stock.map((s,i)=>`<tr><td>${esc(s.name)}</td><td>${s.qty}</td><td>${s.reorder}</td><td>${esc(s.supplier)}</td><td>${s.qty<=s.reorder?'<span class="tag">Low</span>':'OK'}</td><td><button class="btn light" onclick="editStock(${i})">Edit</button></td></tr>`).join("");
@@ -101,5 +157,69 @@ function addSupplier(){const name=supplierName.value.trim();if(!name)return;data
 function editSupplier(i){const s=data.suppliers[i],name=prompt("Supplier name",s.name);if(!name)return;s.name=name;s.phone=prompt("Phone/contact",s.phone)||"";s.email=prompt("Email",s.email)||"";s.notes=prompt("Notes",s.notes)||"";save()}
 function addClient(){const name=clientName.value.trim();if(!name)return;data.clients.push({name,email:clientEmail.value,phone:clientPhone.value,note:clientNote.value});clientName.value=clientEmail.value=clientPhone.value=clientNote.value="";save()}
 function addUser(){const name=userName.value.trim();if(!name)return;data.users.push({name,email:userEmail.value,role:userRole.value,status:userStatus.value});userName.value=userEmail.value="";save()}
+
+function login(){
+  const email=document.getElementById("loginEmail").value.trim();
+  const pass=document.getElementById("loginPassword").value.trim();
+  if(!email||!pass){alert("Enter email and password");return}
+  localStorage.setItem("piercingOS_loggedIn","yes");
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("appWrap").classList.remove("hidden");
+}
+function logout(){
+  localStorage.removeItem("piercingOS_loggedIn");
+  document.getElementById("appWrap").classList.add("hidden");
+  document.getElementById("loginScreen").classList.remove("hidden");
+}
+function applyBranding(){
+  const b=data.branding||seed.branding;
+  document.documentElement.style.setProperty("--brand",b.brand||"#16483d");
+  document.documentElement.style.setProperty("--brand2",b.accent||"#226c5b");
+  document.querySelector(".logo").textContent=b.studioName||"PiercingOS";
+  document.getElementById("loginStudioName").textContent=b.studioName||"PiercingOS";
+  if(document.getElementById("brandStudioName")){
+    brandStudioName.value=b.studioName||"";
+    brandInitials.value=b.initials||"";
+    brandColour.value=b.brand||"#16483d";
+    brandAccent.value=b.accent||"#226c5b";
+    brandEmail.value=b.email||"";
+    brandPreviewName.textContent=b.studioName||"PiercingOS";
+    brandPreviewEmail.textContent=b.email||"studio@example.com";
+    if(b.logo){logoPreview.innerHTML='<img src="'+b.logo+'">'}else{logoPreview.textContent=b.initials||"PO"}
+  }
+}
+function saveBranding(){
+  data.branding={
+    studioName:brandStudioName.value||"PiercingOS",
+    initials:brandInitials.value||"PO",
+    brand:brandColour.value||"#16483d",
+    accent:brandAccent.value||"#226c5b",
+    email:brandEmail.value||"",
+    logo:(data.branding&&data.branding.logo)||""
+  };
+  save();
+  applyBranding();
+  alert("Branding saved.");
+}
+function loadLogo(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    data.branding=data.branding||seed.branding;
+    data.branding.logo=reader.result;
+    save();
+    applyBranding();
+  };
+  reader.readAsDataURL(file);
+}
+function resetBranding(){
+  data.branding={studioName:"PiercingOS",initials:"PO",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""};
+  save();
+  applyBranding();
+}
+
+applyBranding();
 render();
+if(localStorage.getItem("piercingOS_loggedIn")==="yes"){document.getElementById("loginScreen").classList.add("hidden");document.getElementById("appWrap").classList.remove("hidden");}
 </script></body></html>
