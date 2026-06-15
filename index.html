@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PiercingOS MVP</title>
+<title>My Studio MVP</title>
 <style>
 :root{--bg:#f7f3ee;--card:#fff;--ink:#161412;--muted:#746e66;--line:#e9dfd4;--brand:#16483d;--brand2:#226c5b;--bad:#8a2c2c}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
@@ -16,7 +16,7 @@
 table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase}
 .btn{border:0;background:var(--brand2);color:white;border-radius:13px;padding:12px 14px;font-weight:900;font-size:15px;cursor:pointer}.btn.light{background:#efe7dd;color:#241f1a}.btn.danger{background:var(--bad)}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:5px}input,select,textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;background:white;font-size:16px}textarea{min-height:110px}
-.screen{display:none}.screen.active{display:block}
+.screen,.platform-screen{display:none}.screen.active,.platform-screen.active{display:block}
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(135deg,var(--brand),var(--brand2))}
 .login-card{width:100%;max-width:430px;background:white;border-radius:24px;padding:26px;box-shadow:0 18px 60px rgba(0,0,0,.22)}
 .login-logo{font-size:30px;font-weight:900;color:var(--brand);margin-bottom:6px}
@@ -34,22 +34,94 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 <body>
 <div id="loginScreen" class="login-wrap">
   <div class="login-card">
-    <div class="brand-preview" style="margin-bottom:14px"><div class="logo-preview" id="loginLogoPreview">PO</div><div><div class="login-logo" id="loginStudioName">PiercingOS</div><div class="mini">Secure staff access</div></div></div>
-    <div class="login-note">Staff login — demo access control</div>
-    <label>Email</label>
-    <input id="loginEmail" placeholder="owner@example.com" value="owner@example.com">
-    <br><br>
-    <label>Password</label>
-    <input id="loginPassword" type="password" placeholder="Demo password" value="demo">
-    <button class="btn" onclick="login()">Log in</button>
-    <p class="mini">Demo login: use any email and password. The real version will use Firebase Authentication.</p>
+    <div class="brand-preview" style="margin-bottom:14px">
+      <div class="logo-preview" id="loginLogoPreview">MS</div>
+      <div>
+        <div class="login-logo" id="loginStudioName">My Studio</div>
+        <div class="mini">James Dowdall control centre</div>
+      </div>
+    </div>
+    <div class="login-note">Choose where you want to go.</div>
+
+    <button class="btn" onclick="loginAs('platform')">SaaS platform management</button>
+    <button class="btn light" onclick="loginAs('studio')">Log into demo studio</button>
+
+    <p class="mini">Later this will be replaced with a secure Firebase login. For now this gives clean separation between your platform-owner area and the studio app.</p>
   </div>
 </div>
 
+
+<div id="platformWrap" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand-head">
+      <div class="side-logo-img">MS</div>
+      <div>
+        <div class="logo">My Studio HQ</div>
+        <div class="small">SaaS platform management</div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="active" onclick="showPlatform('platformDashboard',this)">🧠 Overview</button>
+      <button onclick="showPlatform('platformStudios',this)">🏢 Studios</button>
+      <button onclick="showPlatform('platformPlans',this)">💷 Plans</button>
+      <button onclick="showPlatform('platformSupport',this)">🎧 Support</button>
+      <button onclick="backToPortal()">↩️ Portal</button>
+      <button onclick="logout()">🚪 Log out</button>
+    </div>
+  </aside>
+  <main class="main">
+    <section id="platformDashboard" class="platform-screen active">
+      <div class="top"><h1>Platform overview</h1><span class="badge">James Dowdall admin</span></div>
+      <div class="grid">
+        <div class="card"><div class="muted">Studios</div><div class="kpi">12</div></div>
+        <div class="card"><div class="muted">Monthly recurring revenue</div><div class="kpi">£708</div></div>
+        <div class="card"><div class="muted">Trial accounts</div><div class="kpi">5</div></div>
+        <div class="card"><div class="muted">Support tickets</div><div class="kpi">3</div></div>
+      </div>
+      <div class="two">
+        <div class="card">
+          <h2>Recent studios</h2>
+          <table><tr><th>Studio</th><th>Plan</th><th>Status</th><th>MRR</th></tr><tr><td>Luxe Piercing</td><td>Studio+</td><td>Active</td><td>£99</td></tr><tr><td>Ink & Steel</td><td>Professional</td><td>Trial</td><td>£59</td></tr><tr><td>Needle Room</td><td>Starter</td><td>Active</td><td>£29</td></tr></table>
+        </div>
+        <div class="card">
+          <h2>Owner actions</h2>
+          <button class="btn">Create new studio</button><br><br>
+          <button class="btn light">Manage billing</button><br><br>
+          <button class="btn light">View usage</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="platformStudios" class="platform-screen">
+      <div class="top"><h1>Studios</h1><button class="btn">Add studio</button></div>
+      <div class="card">
+        <table><tr><th>Studio</th><th>Owner</th><th>Plan</th><th>Status</th><th>Next bill</th></tr><tr><td>Luxe Piercing</td><td>Sarah</td><td>Studio+</td><td>Active</td><td>1 July</td></tr><tr><td>Ink & Steel</td><td>Mark</td><td>Professional</td><td>Trial</td><td>Trial ends 24 June</td></tr></table>
+      </div>
+    </section>
+
+    <section id="platformPlans" class="platform-screen">
+      <div class="top"><h1>Plans & pricing</h1><span class="badge">SaaS revenue</span></div>
+      <div class="grid">
+        <div class="card"><h2>Starter</h2><div class="kpi">£29</div><p>POS, stock, clients, aftercare.</p></div>
+        <div class="card"><h2>Professional</h2><div class="kpi">£59</div><p>Marketing, vouchers, branding, reports.</p></div>
+        <div class="card"><h2>Studio+</h2><div class="kpi">£99</div><p>Public webpage, booking, custom domain.</p></div>
+        <div class="card"><h2>Enterprise</h2><div class="kpi">POA</div><p>Multi-location studio groups.</p></div>
+      </div>
+    </section>
+
+    <section id="platformSupport" class="platform-screen">
+      <div class="top"><h1>Support</h1><span class="badge">Platform-wide</span></div>
+      <div class="card">
+        <table><tr><th>Studio</th><th>Issue</th><th>Status</th></tr><tr><td>Luxe Piercing</td><td>Need help importing clients</td><td>Open</td></tr><tr><td>Needle Room</td><td>Billing card expired</td><td>Pending</td></tr></table>
+      </div>
+    </section>
+  </main>
+</div>
+
 <div id="appWrap" class="app hidden"><aside class="sidebar">
-<div class="brand-head"><div class="side-logo-img" id="sideLogoPreview">PO</div><div><div class="logo">PiercingOS</div><div class="small">MVP v10 — SaaS platform concept</div></div></div>
+<div class="brand-head"><div class="side-logo-img" id="sideLogoPreview">PO</div><div><div class="logo">My Studio</div><div class="small">Clean portal split</div></div></div>
 <div class="nav">
-<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button><button onclick="show('marketing',this)">📣 Marketing</button><button onclick="show('vouchers',this)">🎁 Vouchers</button><button onclick="show('publicpage',this)">🌐 Public page</button><button onclick="show('platformadmin',this)">🧠 Platform admin</button><button onclick="show('settings',this)">🎨 Branding</button><button onclick="logout()">🚪 Log out</button>
+<button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button><button onclick="show('marketing',this)">📣 Marketing</button><button onclick="show('vouchers',this)">🎁 Vouchers</button><button onclick="show('publicpage',this)">🌐 Public page</button><button onclick="show('settings',this)">🎨 Branding</button><button onclick="backToPortal()">↩️ Portal</button><button onclick="logout()">🚪 Log out</button>
 </div></aside><main class="main">
 
 <section id="dashboard" class="screen active"><div class="top"><h1>Dashboard</h1><span class="badge">Not connected to Firebase yet</span></div>
@@ -104,7 +176,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
       <div class="brand-preview">
         <div class="logo-preview" id="logoPreview">PO</div>
         <div>
-          <strong id="brandPreviewName">PiercingOS</strong><br>
+          <strong id="brandPreviewName">My Studio</strong><br>
           <span class="mini" id="brandPreviewEmail">studio@example.com</span>
         </div>
       </div>
@@ -186,28 +258,6 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
   </div>
 </section>
 
-<section id="platformadmin" class="screen">
-  <div class="top"><h1>Platform admin</h1><span class="badge">For you only</span></div>
-  <div class="grid">
-    <div class="card"><div class="muted">Studios</div><div class="kpi">12</div></div>
-    <div class="card"><div class="muted">Monthly recurring revenue</div><div class="kpi">£708</div></div>
-    <div class="card"><div class="muted">Trial accounts</div><div class="kpi">5</div></div>
-    <div class="card"><div class="muted">Support tickets</div><div class="kpi">3</div></div>
-  </div>
-  <div class="two">
-    <div class="card">
-      <h2>Studios</h2>
-      <table><tr><th>Studio</th><th>Plan</th><th>Status</th><th>MRR</th></tr><tr><td>Luxe Piercing</td><td>Studio+</td><td>Active</td><td>£99</td></tr><tr><td>Ink & Steel</td><td>Professional</td><td>Trial</td><td>£59</td></tr><tr><td>Needle Room</td><td>Starter</td><td>Active</td><td>£29</td></tr></table>
-    </div>
-    <div class="card">
-      <h2>SaaS controls</h2>
-      <p>Manage subscriptions, suspend accounts, view billing, create coupons, monitor usage and support studios.</p>
-      <button class="btn">Create studio</button>
-      <br><br><button class="btn light">Manage plans</button>
-      <br><br><button class="btn light">View billing</button>
-    </div>
-  </div>
-</section>
 
 </main></div>
 <script>
@@ -219,7 +269,7 @@ clients:[{name:"Sophie M",email:"sophie@example.com",phone:"07...",marketing:"Ye
 users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"},{name:"Amy",email:"amy@example.com",role:"Piercer",status:"Active"}],
 sales:[],
 aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio",imageUrl:"",imageData:""},
-branding:{studioName:"PiercingOS",initials:"PO",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""}
+branding:{studioName:"Demo Studio",initials:"MS",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""}
 };
 let data=JSON.parse(localStorage.getItem("piercingOS_v4")||"null")||seed;let basket=[];let activeCategory="Piercings";
 function save(){localStorage.setItem("piercingOS_v4",JSON.stringify(data));render();}
@@ -267,39 +317,56 @@ function editSupplier(i){const s=data.suppliers[i],name=prompt("Supplier name",s
 function addClient(){const name=clientName.value.trim();if(!name)return;data.clients.push({name,email:clientEmail.value,phone:clientPhone.value,marketing:clientMarketing.value,note:clientNote.value});clientName.value=clientEmail.value=clientPhone.value=clientNote.value="";save()}
 function addUser(){const name=userName.value.trim();if(!name)return;data.users.push({name,email:userEmail.value,role:userRole.value,status:userStatus.value});userName.value=userEmail.value="";save()}
 
-function login(){
-  const email=document.getElementById("loginEmail").value.trim();
-  const pass=document.getElementById("loginPassword").value.trim();
-  if(!email||!pass){alert("Enter email and password");return}
-  localStorage.setItem("piercingOS_loggedIn","yes");
+function loginAs(mode){
+  localStorage.setItem("mystudio_loggedIn","yes");
+  localStorage.setItem("mystudio_mode",mode);
   document.getElementById("loginScreen").classList.add("hidden");
-  document.getElementById("appWrap").classList.remove("hidden");
+  if(mode==="platform"){
+    document.getElementById("platformWrap").classList.remove("hidden");
+    document.getElementById("appWrap").classList.add("hidden");
+  }else{
+    document.getElementById("appWrap").classList.remove("hidden");
+    document.getElementById("platformWrap").classList.add("hidden");
+  }
+}
+function backToPortal(){
+  document.getElementById("loginScreen").classList.remove("hidden");
+  document.getElementById("appWrap").classList.add("hidden");
+  document.getElementById("platformWrap").classList.add("hidden");
+}
+function showPlatform(id,btn){
+  document.querySelectorAll(".platform-screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.closest(".nav").querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
 }
 function logout(){
-  localStorage.removeItem("piercingOS_loggedIn");
+  localStorage.removeItem("mystudio_loggedIn");
+  localStorage.removeItem("mystudio_mode");
   document.getElementById("appWrap").classList.add("hidden");
+  document.getElementById("platformWrap").classList.add("hidden");
   document.getElementById("loginScreen").classList.remove("hidden");
 }
 function applyBranding(){
   const b=data.branding||seed.branding;
   document.documentElement.style.setProperty("--brand",b.brand||"#16483d");
   document.documentElement.style.setProperty("--brand2",b.accent||"#226c5b");
-  document.querySelector(".logo").textContent=b.studioName||"PiercingOS";
-  document.getElementById("loginStudioName").textContent=b.studioName||"PiercingOS";
+  document.querySelector(".logo").textContent=b.studioName||"My Studio";
+  document.getElementById("loginStudioName").textContent=b.studioName||"My Studio";
   if(document.getElementById("brandStudioName")){
     brandStudioName.value=b.studioName||"";
     brandInitials.value=b.initials||"";
     brandColour.value=b.brand||"#16483d";
     brandAccent.value=b.accent||"#226c5b";
     brandEmail.value=b.email||"";
-    brandPreviewName.textContent=b.studioName||"PiercingOS";
+    brandPreviewName.textContent=b.studioName||"My Studio";
     brandPreviewEmail.textContent=b.email||"studio@example.com";
-    if(b.logo){logoPreview.innerHTML='<img src="'+b.logo+'">';sideLogoPreview.innerHTML='<img src="'+b.logo+'">';loginLogoPreview.innerHTML='<img src="'+b.logo+'">'}else{logoPreview.textContent=b.initials||"PO";sideLogoPreview.textContent=b.initials||"PO";loginLogoPreview.textContent=b.initials||"PO"}
+    if(b.logo){logoPreview.innerHTML='<img src="'+b.logo+'">';sideLogoPreview.innerHTML='<img src="'+b.logo+'">';loginLogoPreview.innerHTML='<img src="'+b.logo+'">'}else{logoPreview.textContent=b.initials||"MS";sideLogoPreview.textContent=b.initials||"MS";loginLogoPreview.textContent=b.initials||"MS"}
   }
 }
 function saveBranding(){
   data.branding={
-    studioName:brandStudioName.value||"PiercingOS",
+    studioName:brandStudioName.value||"My Studio",
     initials:brandInitials.value||"PO",
     brand:brandColour.value||"#16483d",
     accent:brandAccent.value||"#226c5b",
@@ -323,7 +390,7 @@ function loadLogo(event){
   reader.readAsDataURL(file);
 }
 function resetBranding(){
-  data.branding={studioName:"PiercingOS",initials:"PO",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""};
+  data.branding={studioName:"My Studio",initials:"MS",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""};
   save();
   applyBranding();
 }
@@ -342,5 +409,10 @@ function loadAftercareImage(event){
 
 applyBranding();
 render();
-if(localStorage.getItem("piercingOS_loggedIn")==="yes"){document.getElementById("loginScreen").classList.add("hidden");document.getElementById("appWrap").classList.remove("hidden");}
+if(localStorage.getItem("mystudio_loggedIn")==="yes"){
+  const mode=localStorage.getItem("mystudio_mode")||"studio";
+  document.getElementById("loginScreen").classList.add("hidden");
+  if(mode==="platform"){document.getElementById("platformWrap").classList.remove("hidden");}
+  else{document.getElementById("appWrap").classList.remove("hidden");}
+}
 </script></body></html>
