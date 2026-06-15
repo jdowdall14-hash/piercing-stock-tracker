@@ -47,7 +47,7 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 </div>
 
 <div id="appWrap" class="app hidden"><aside class="sidebar">
-<div class="brand-head"><div class="side-logo-img" id="sideLogoPreview">PO</div><div><div class="logo">PiercingOS</div><div class="small">MVP v7 — POS categories</div></div></div>
+<div class="brand-head"><div class="side-logo-img" id="sideLogoPreview">PO</div><div><div class="logo">PiercingOS</div><div class="small">MVP v8 — aftercare image option</div></div></div>
 <div class="nav">
 <button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button><button onclick="show('pos',this)">💳 POS</button><button onclick="show('piercings',this)">🩹 Piercings</button><button onclick="show('aftercare',this)">✉️ Aftercare</button><button onclick="show('recipes',this)">🧾 Recipes</button><button onclick="show('stock',this)">📦 Stock</button><button onclick="show('suppliers',this)">🚚 Suppliers</button><button onclick="show('clients',this)">👥 Clients</button><button onclick="show('users',this)">🔐 Users</button><button onclick="show('settings',this)">🎨 Branding</button><button onclick="logout()">🚪 Log out</button>
 </div></aside><main class="main">
@@ -63,7 +63,15 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;bor
 
 <section id="piercings" class="screen"><div class="top"><h1>Piercing history</h1><span class="badge">Tracks client, staff, piercing and email status</span></div><div class="card"><table><thead><tr><th>Date</th><th>Client</th><th>Piercing / sale</th><th>Staff</th><th>Aftercare email</th><th></th></tr></thead><tbody id="piercingTable"></tbody></table></div></section>
 
-<section id="aftercare" class="screen"><div class="top"><h1>Aftercare emails</h1><button class="btn" onclick="saveAftercareTemplate()">Save template</button></div><div class="two"><div class="card"><h2>Email template</h2><label>Subject</label><input id="aftercareSubject"><br><br><label>Message</label><textarea id="aftercareBody"></textarea><p class="mini">Tap “Open email app” on a client below. It opens Mail/Gmail/Outlook on your phone with the client email, subject and aftercare message filled in. Then mark it as sent.</p></div><div class="card"><h2>Waiting to send</h2><div id="aftercareQueue"></div></div></div></section>
+<section id="aftercare" class="screen"><div class="top"><h1>Aftercare emails</h1><button class="btn" onclick="saveAftercareTemplate()">Save template</button></div><div class="two"><div class="card"><h2>Email template</h2><label>Subject</label><input id="aftercareSubject"><br><br><label>Message</label><textarea id="aftercareBody"></textarea>
+<br><br>
+<label>Aftercare image link</label>
+<input id="aftercareImageUrl" placeholder="Paste a public image/link here">
+<br><br>
+<label>Upload aftercare image preview</label>
+<input id="aftercareImageFile" type="file" accept="image/*" onchange="loadAftercareImage(event)">
+<div id="aftercareImagePreview" class="recipe-box">No aftercare image selected yet.</div>
+<p class="mini">The email app can open a prepared email. Phone email apps do not reliably allow a website to auto-attach an image, so this demo adds an image link to the email. The real Firebase version can send proper branded HTML emails with images automatically.</p></div><div class="card"><h2>Waiting to send</h2><div id="aftercareQueue"></div></div></div></section>
 
 <section id="recipes" class="screen"><div class="top"><h1>Recipes</h1><button class="btn" onclick="addRecipe()">Save recipe</button></div><div class="card"><div class="form"><div><label>Service / product name</label><input id="recipeName" placeholder="e.g. Nose piercing"></div><div><label>Sale price</label><input id="recipePrice" type="number" placeholder="35"></div><div><label>POS section</label><select id="recipeCategory"><option>Piercings</option><option>Jewellery</option><option>Creams / Aftercare</option><option>Other</option></select></div><div><label>Stock item 1</label><select id="recipeItem1"></select></div><div><label>Qty used</label><input id="recipeQty1" type="number" value="1"></div><div><label>Stock item 2</label><select id="recipeItem2"></select></div><div><label>Qty used</label><input id="recipeQty2" type="number" value="1"></div><div><label>Stock item 3 optional</label><select id="recipeItem3"></select></div><div><label>Qty used</label><input id="recipeQty3" type="number" value="0"></div></div></div><br><div class="card"><table><thead><tr><th>Service</th><th>Section</th><th>Price</th><th>Recipe deducts</th><th></th></tr></thead><tbody id="recipeTable"></tbody></table></div></section>
 
@@ -115,7 +123,7 @@ recipes:[{name:"Nose piercing",category:"Piercings",price:35,items:[{stock:"16G 
 clients:[{name:"Sophie M",email:"sophie@example.com",phone:"07...",note:"Prefers email aftercare"}],
 users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"},{name:"Amy",email:"amy@example.com",role:"Piercer",status:"Active"}],
 sales:[],
-aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio"},
+aftercareTemplate:{subject:"Your piercing aftercare instructions",body:"Hi {name},\n\nThank you for visiting us today. Please clean your piercing as advised and avoid touching it with unwashed hands.\n\nIf you notice unusual swelling, heat, discharge or feel worried, please contact us or seek medical advice.\n\nThanks,\nThe Studio",imageUrl:"",imageData:""},
 branding:{studioName:"PiercingOS",initials:"PO",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""}
 };
 let data=JSON.parse(localStorage.getItem("piercingOS_v4")||"null")||seed;let basket=[];let activeCategory="Piercings";
@@ -139,7 +147,7 @@ document.getElementById("productButtons").innerHTML=data.recipes.map((p,i)=>({p,
 document.getElementById("saleClient").innerHTML=clientOptions();document.getElementById("saleStaff").innerHTML=staffOptions();
 document.getElementById("basket").innerHTML=basket.map(p=>`<div class="basket-line"><span><strong>${esc(p.name)}</strong><br><span class="mini">Deducts: ${p.items.map(x=>`${x.qty} ${esc(x.stock)}`).join(", ")}</span></span><strong>${money(p.price)}</strong></div>`).join("")||"<p class='muted'>Basket empty.</p>";document.getElementById("basketTotal").textContent=money(basket.reduce((a,p)=>a+p.price,0));
 document.getElementById("piercingTable").innerHTML=data.sales.slice().reverse().map((s,revIndex)=>{const i=data.sales.length-1-revIndex;return `<tr><td>${new Date(s.date).toLocaleDateString()}</td><td>${esc(s.clientName||"Walk-in")}</td><td>${esc(s.items.map(x=>x.name).join(", "))}</td><td>${esc(s.staff)}</td><td>${s.aftercareSent?'<span class="tag green">Sent</span>':'<span class="tag red">Not sent</span>'}</td><td>${s.clientEmail&&!s.aftercareSent?`<button class="btn" onclick="sendAftercare(${i})">Open email app</button>`:""}</td></tr>`}).join("")||"<tr><td colspan='6'>Nothing logged yet.</td></tr>";
-document.getElementById("aftercareSubject").value=data.aftercareTemplate.subject;document.getElementById("aftercareBody").value=data.aftercareTemplate.body;
+document.getElementById("aftercareSubject").value=data.aftercareTemplate.subject;document.getElementById("aftercareBody").value=data.aftercareTemplate.body;document.getElementById("aftercareImageUrl").value=data.aftercareTemplate.imageUrl||"";document.getElementById("aftercareImagePreview").innerHTML=data.aftercareTemplate.imageData?'<img src="'+data.aftercareTemplate.imageData+'" style="max-width:100%;border-radius:14px">':(data.aftercareTemplate.imageUrl?'<a href="'+esc(data.aftercareTemplate.imageUrl)+'" target="_blank">Open aftercare image link</a>':'No aftercare image selected yet.');
 document.getElementById("aftercareQueue").innerHTML=data.sales.map((s,i)=>({s,i})).filter(x=>!x.s.aftercareSent).map(x=>`<p><strong>${esc(x.s.clientName||"Walk-in")}</strong><br><span class="mini">${esc(x.s.items.map(i=>i.name).join(", "))}</span><br>${x.s.clientEmail?`<button class="btn" onclick="sendAftercare(${x.i})">Open email app</button>`:"<span class='tag red'>No email on account</span>"}</p>`).join("")||"<p class='muted'>No aftercare emails waiting.</p>";
 ["recipeItem1","recipeItem2","recipeItem3"].forEach((id,idx)=>document.getElementById(id).innerHTML=options("",idx===2));document.getElementById("stockSupplier").innerHTML=supplierOptions();
 document.getElementById("recipeTable").innerHTML=data.recipes.map((r,i)=>`<tr><td>${esc(r.name)}</td><td>${esc(r.category||"Other")}</td><td>${money(r.price)}</td><td>${recipeText(r)}</td><td><button class="btn light" onclick="deleteRecipe(${i})">Delete</button></td></tr>`).join("");
@@ -151,8 +159,10 @@ document.getElementById("userTable").innerHTML=data.users.map(u=>`<tr><td>${esc(
 function setCategory(c){activeCategory=decodeURIComponent(c);render()}
 function addToBasket(i){basket.push(JSON.parse(JSON.stringify(data.recipes[i])));render()}function clearBasket(){basket=[];render()}
 function checkout(){if(!basket.length){alert("Basket is empty");return}for(const saleItem of basket){for(const used of saleItem.items){const st=data.stock.find(s=>s.name===used.stock);if(!st||st.qty<used.qty){alert("Not enough stock for "+used.stock);return}}}basket.forEach(si=>si.items.forEach(u=>{data.stock.find(s=>s.name===u.stock).qty-=u.qty}));const ci=document.getElementById("saleClient").value;const client=ci===""?null:data.clients[+ci];data.sales.push({items:[...basket],payment:payment.value,total:basket.reduce((a,p)=>a+p.price,0),date:new Date().toISOString(),clientName:client?.name||"Walk-in",clientEmail:client?.email||"",staff:saleStaff.value,aftercareSent:false});basket=[];save();alert("Transaction processed. Piercing logged and aftercare marked as not sent.")}
-function saveAftercareTemplate(){data.aftercareTemplate.subject=aftercareSubject.value;data.aftercareTemplate.body=aftercareBody.value;save();alert("Aftercare template saved.")}
-function sendAftercare(i){const s=data.sales[i];if(!s.clientEmail){alert("This client has no email address.");return}const body=data.aftercareTemplate.body.replaceAll("{name}",s.clientName).replaceAll("{piercing}",s.items.map(x=>x.name).join(", "));window.location.href=`mailto:${encodeURIComponent(s.clientEmail)}?subject=${encodeURIComponent(data.aftercareTemplate.subject)}&body=${encodeURIComponent(body)}`;if(confirm("Mark aftercare as sent?")){s.aftercareSent=true;save();}}
+function saveAftercareTemplate(){data.aftercareTemplate.subject=aftercareSubject.value;data.aftercareTemplate.body=aftercareBody.value;data.aftercareTemplate.imageUrl=aftercareImageUrl.value;save();alert("Aftercare template saved.")}
+function sendAftercare(i){const s=data.sales[i];if(!s.clientEmail){alert("This client has no email address.");return}let body=data.aftercareTemplate.body.replaceAll("{name}",s.clientName).replaceAll("{piercing}",s.items.map(x=>x.name).join(", "));
+if(data.aftercareTemplate.imageUrl){body+="\n\nAftercare image / guide: "+data.aftercareTemplate.imageUrl;}
+window.location.href=`mailto:${encodeURIComponent(s.clientEmail)}?subject=${encodeURIComponent(data.aftercareTemplate.subject)}&body=${encodeURIComponent(body)}`;if(confirm("Mark aftercare as sent?")){s.aftercareSent=true;save();}}
 function addRecipe(){const items=[];[["recipeItem1","recipeQty1"],["recipeItem2","recipeQty2"],["recipeItem3","recipeQty3"]].forEach(([item,qty])=>{const stock=document.getElementById(item).value,q=+document.getElementById(qty).value||0;if(stock&&q>0)items.push({stock,qty:q})});const name=recipeName.value.trim();if(!name||!items.length){alert("Add a recipe name and at least one stock item.");return}data.recipes.push({name,category:recipeCategory.value||"Other",price:+recipePrice.value||0,items});recipeName.value=recipePrice.value="";save()}
 function deleteRecipe(i){if(confirm("Delete this recipe?")){data.recipes.splice(i,1);save()}}
 function addStock(){const name=stockName.value.trim();if(!name)return;data.stock.push({name,qty:+stockQty.value||0,reorder:+stockReorder.value||0,supplier:stockSupplier.value||""});stockName.value=stockQty.value=stockReorder.value="";save()}
@@ -221,6 +231,18 @@ function resetBranding(){
   data.branding={studioName:"PiercingOS",initials:"PO",brand:"#16483d",accent:"#226c5b",email:"studio@example.com",logo:""};
   save();
   applyBranding();
+}
+
+function loadAftercareImage(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    data.aftercareTemplate.imageData=reader.result;
+    save();
+    alert("Image preview saved. To include it in the actual email, use a public image/link in the image link box or use the future Firebase email sender.");
+  };
+  reader.readAsDataURL(file);
 }
 
 applyBranding();
