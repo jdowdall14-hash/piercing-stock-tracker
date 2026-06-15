@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PiercingOS MVP</title>
+<style>
+:root{--bg:#f7f3ee;--card:#fff;--ink:#161412;--muted:#746e66;--line:#e9dfd4;--brand:#16483d;--brand2:#226c5b;--warn:#b45309}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{min-height:100vh;display:grid;grid-template-columns:260px 1fr}
+.sidebar{background:var(--brand);color:white;padding:22px;position:sticky;top:0;height:100vh}
+.logo{font-size:24px;font-weight:900;line-height:1.05}.small{font-size:13px;color:rgba(255,255,255,.72);margin-top:7px;margin-bottom:24px}
+.nav button{display:block;width:100%;border:0;background:transparent;color:white;text-align:left;padding:13px 12px;border-radius:14px;font-size:16px;margin:4px 0}
+.nav button.active{background:rgba(255,255,255,.16)} .main{padding:26px;min-width:0}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px} h1{margin:0;font-size:31px} h2{margin:0 0 14px}
+.badge{background:#e3f1ec;color:var(--brand);padding:9px 12px;border-radius:999px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:white;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(30,20,10,.04)}
+.kpi{font-size:32px;font-weight:900;margin-top:8px}.muted{color:var(--muted);font-size:14px}.two{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
+table{width:100%;border-collapse:collapse} th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px} th{color:var(--muted);font-size:12px;text-transform:uppercase}
+.btn{border:0;background:var(--brand2);color:white;border-radius:13px;padding:12px 14px;font-weight:900;font-size:15px}.btn.light{background:#efe7dd;color:#241f1a}.btn.danger{background:#8a2c2c}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px} label{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:5px}
+input,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;background:white;font-size:16px}
+.screen{display:none}.screen.active{display:block}.tag{display:inline-flex;background:#fff4df;color:#8a4b02;border:1px solid #f0d4a5;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.product{border:1px solid var(--line);border-radius:16px;padding:14px;background:white;text-align:left}.product strong{display:block;font-size:17px}.product span{color:var(--muted)}
+.basket-line{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0}.total{display:flex;justify-content:space-between;font-size:28px;font-weight:900;margin-top:14px}
+@media(max-width:850px){.app{display:block}.sidebar{height:auto;position:sticky;z-index:5}.nav{display:flex;overflow:auto;gap:6px}.nav button{white-space:nowrap;width:auto}.main{padding:16px}.grid,.two,.form,.products{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">PiercingOS</div>
+  <div class="small">MVP demo — POS, stock, clients and staff</div>
+  <div class="nav">
+    <button class="active" onclick="show('dashboard',this)">🏠 Dashboard</button>
+    <button onclick="show('pos',this)">💳 POS</button>
+    <button onclick="show('stock',this)">📦 Stock</button>
+    <button onclick="show('clients',this)">👥 Clients</button>
+    <button onclick="show('users',this)">🔐 Users</button>
+  </div>
+</aside>
+<main class="main">
+<section id="dashboard" class="screen active">
+  <div class="top"><h1>Dashboard</h1><span class="badge">Live MVP preview</span></div>
+  <div class="grid">
+    <div class="card"><div class="muted">Sales today</div><div class="kpi" id="kpiSales">£0</div></div>
+    <div class="card"><div class="muted">Transactions</div><div class="kpi" id="kpiTx">0</div></div>
+    <div class="card"><div class="muted">Low stock</div><div class="kpi" id="kpiLow">0</div></div>
+    <div class="card"><div class="muted">Clients</div><div class="kpi" id="kpiClients">0</div></div>
+  </div>
+  <div class="two">
+    <div class="card"><h2>Recent sales</h2><table><thead><tr><th>Sale</th><th>Payment</th><th>Total</th></tr></thead><tbody id="recentSales"></tbody></table></div>
+    <div class="card"><h2>Low stock alerts</h2><div id="lowAlerts"></div></div>
+  </div>
+</section>
+
+<section id="pos" class="screen">
+  <div class="top"><h1>POS</h1><button class="btn" onclick="checkout()">Process sale</button></div>
+  <div class="two">
+    <div class="card"><h2>Tap to add</h2><div class="products" id="productButtons"></div></div>
+    <div class="card"><h2>Basket</h2><div id="basket"></div><div class="total"><span>Total</span><span id="basketTotal">£0</span></div><br><label>Payment method</label><select id="payment"><option>Card</option><option>Cash</option><option>Split</option></select><br><br><button class="btn light" onclick="clearBasket()">Clear basket</button></div>
+  </div>
+</section>
+
+<section id="stock" class="screen">
+  <div class="top"><h1>Stock</h1><button class="btn" onclick="addStock()">Add stock item</button></div>
+  <div class="card"><div class="form"><div><label>Item</label><input id="stockName" placeholder="e.g. 16G needles"></div><div><label>Quantity</label><input id="stockQty" type="number" placeholder="50"></div><div><label>Reorder level</label><input id="stockReorder" type="number" placeholder="20"></div><div><label>Supplier</label><input id="stockSupplier" placeholder="Supplier name"></div></div></div>
+  <br><div class="card"><table><thead><tr><th>Item</th><th>Qty</th><th>Reorder</th><th>Supplier</th><th>Status</th></tr></thead><tbody id="stockTable"></tbody></table></div>
+</section>
+
+<section id="clients" class="screen">
+  <div class="top"><h1>Clients</h1><button class="btn" onclick="addClient()">Add client</button></div>
+  <div class="card"><div class="form"><div><label>Name</label><input id="clientName" placeholder="Client name"></div><div><label>Phone</label><input id="clientPhone" placeholder="Phone number"></div><div><label>Piercing / note</label><input id="clientNote" placeholder="Nose piercing, aftercare sent..."></div><div><label>Date</label><input id="clientDate" type="date"></div></div></div>
+  <br><div class="card"><table><thead><tr><th>Name</th><th>Phone</th><th>Note</th><th>Date</th></tr></thead><tbody id="clientTable"></tbody></table></div>
+</section>
+
+<section id="users" class="screen">
+  <div class="top"><h1>Users</h1><button class="btn" onclick="addUser()">Invite user</button></div>
+  <div class="card"><div class="form"><div><label>Name</label><input id="userName" placeholder="Staff name"></div><div><label>Email</label><input id="userEmail" placeholder="email@example.com"></div><div><label>Role</label><select id="userRole"><option>Owner/Admin</option><option>Piercer</option><option>Reception/POS</option></select></div><div><label>Status</label><select id="userStatus"><option>Active</option><option>Pending invite</option></select></div></div></div>
+  <br><div class="card"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="userTable"></tbody></table></div>
+</section>
+</main>
+</div>
+<script>
+const seed={products:[{name:"Nose piercing",price:35,uses:"16G Needles"},{name:"Lobe pair",price:55,uses:"Titanium Studs"},{name:"Helix",price:40,uses:"16G Needles"},{name:"Titanium stud",price:10,uses:"Titanium Studs"},{name:"Aftercare spray",price:8,uses:"Aftercare Spray"}],stock:[{name:"16G Needles",qty:12,reorder:25,supplier:"NeedlePro"},{name:"Titanium Studs",qty:84,reorder:30,supplier:"Jewellery Co"},{name:"Aftercare Spray",qty:22,reorder:20,supplier:"MedSupply"},{name:"Sterile Wipes",qty:18,reorder:50,supplier:"MedSupply"}],clients:[{name:"Sophie M",phone:"07...",note:"Nose piercing",date:new Date().toISOString().slice(0,10)}],users:[{name:"Tracey",email:"owner@example.com",role:"Owner/Admin",status:"Active"}],sales:[]};
+let data=JSON.parse(localStorage.getItem("piercingOS")||"null")||seed; let basket=[];
+function save(){localStorage.setItem("piercingOS",JSON.stringify(data)); render();}
+function money(n){return "£"+Number(n||0).toFixed(0)}
+function show(id,btn){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
+function render(){
+ document.getElementById("kpiSales").textContent=money(data.sales.reduce((a,s)=>a+s.total,0));
+ document.getElementById("kpiTx").textContent=data.sales.length;
+ document.getElementById("kpiLow").textContent=data.stock.filter(s=>s.qty<=s.reorder).length;
+ document.getElementById("kpiClients").textContent=data.clients.length;
+ document.getElementById("recentSales").innerHTML=data.sales.slice(-6).reverse().map(s=>`<tr><td>${s.items.map(i=>i.name).join(", ")}</td><td>${s.payment}</td><td>${money(s.total)}</td></tr>`).join("")||"<tr><td colspan='3'>No sales yet — try the POS tab.</td></tr>";
+ document.getElementById("lowAlerts").innerHTML=data.stock.filter(s=>s.qty<=s.reorder).map(s=>`<p><span class="tag">Low</span> ${s.name} — ${s.qty} left</p>`).join("")||"<p class='muted'>No low stock items.</p>";
+ document.getElementById("productButtons").innerHTML=data.products.map((p,i)=>`<button class="product" onclick="addToBasket(${i})"><strong>${p.name}</strong><span>${money(p.price)}</span></button>`).join("");
+ document.getElementById("basket").innerHTML=basket.map((p,i)=>`<div class="basket-line"><span>${p.name}</span><strong>${money(p.price)}</strong></div>`).join("")||"<p class='muted'>Basket empty.</p>";
+ document.getElementById("basketTotal").textContent=money(basket.reduce((a,p)=>a+p.price,0));
+ document.getElementById("stockTable").innerHTML=data.stock.map(s=>`<tr><td>${s.name}</td><td>${s.qty}</td><td>${s.reorder}</td><td>${s.supplier}</td><td>${s.qty<=s.reorder?'<span class="tag">Low</span>':'OK'}</td></tr>`).join("");
+ document.getElementById("clientTable").innerHTML=data.clients.map(c=>`<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.note}</td><td>${c.date}</td></tr>`).join("");
+ document.getElementById("userTable").innerHTML=data.users.map(u=>`<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td></tr>`).join("");
+}
+function addToBasket(i){basket.push(data.products[i]); render();}
+function clearBasket(){basket=[]; render();}
+function checkout(){if(!basket.length){alert("Basket is empty");return;} const payment=document.getElementById("payment").value; basket.forEach(p=>{const st=data.stock.find(s=>s.name===p.uses); if(st) st.qty=Math.max(0,st.qty-1);}); data.sales.push({items:[...basket],payment,total:basket.reduce((a,p)=>a+p.price,0),date:new Date().toISOString()}); basket=[]; save(); alert("Sale processed. Stock deducted.");}
+function addStock(){const name=stockName.value.trim(); if(!name)return; data.stock.push({name,qty:+stockQty.value||0,reorder:+stockReorder.value||0,supplier:stockSupplier.value||""}); stockName.value=stockQty.value=stockReorder.value=stockSupplier.value=""; save();}
+function addClient(){const name=clientName.value.trim(); if(!name)return; data.clients.push({name,phone:clientPhone.value,note:clientNote.value,date:clientDate.value||new Date().toISOString().slice(0,10)}); clientName.value=clientPhone.value=clientNote.value=clientDate.value=""; save();}
+function addUser(){const name=userName.value.trim(); if(!name)return; data.users.push({name,email:userEmail.value,role:userRole.value,status:userStatus.value}); userName.value=userEmail.value=""; save();}
+render();
+</script>
+</body>
+</html>
